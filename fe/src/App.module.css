@@ -1,0 +1,23 @@
+.layout {
+  width: 100%;
+  height: 100%;
+}
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.logo {
+  height: 32px;
+  background: #1890ff;
+  margin: 16px;
+}
+
+/* dark theme */
+.sider {
+  background: #FAFAFA;
+}
+

@@ -1,0 +1,22 @@
+.component-post-item {
+    padding: 0 15px;
+    background: #e8e8e8;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    height: 40px;
+    color: #000;
+
+    .title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .icon {
+        font-size: 14px;
+        padding: 0 8px;
+        line-height: 1.5;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,23 @@
+.post-list {
+    color: #999;
+    .header .icon {
+        color: #999;
+        padding: 5px;
+    }
+    .header .icon.active {
+        color: #000;
+    }
+    .status {
+        padding: 5px;
+        cursor: pointer;
+    }
+    .status.active {
+        color: #000;
+    }
+    .date {
+        margin-bottom: 20px;
+    }
+    .fragment {
+        margin-top: 40px;
+    }
+}
