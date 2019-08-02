@@ -18,6 +18,7 @@ exports.post_item = (req, res, next) => {
         return res.json(handleWraningNotExist("该文章不存在"));
       }
       // Successful, so render.
+      // TODO: 反转义markdown和html
       res.json(handleSuccess(post));
     });
 };
@@ -53,6 +54,7 @@ exports.post_edit = [
   // 转义
   sanitizeBody("*").escape(),
   sanitizeBody("tag.*").escape(),
+
   (req, res, next) => {
     console.log("tag", req.body.tag);
     const errors = validationResult(req);

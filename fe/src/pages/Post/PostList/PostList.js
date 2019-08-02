@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Radio,
-  Row,
-  Col,
-  Button,
-  Menu,
-  Icon,
-  Dropdown,
-  Modal,
-  message
-} from "antd";
+import { Row, Col, Menu, Icon, Modal, message, Skeleton } from "antd";
 import ListAddButton from "@/components/ListAddButton";
 import "./PostList.scss";
 import PostItem from "./components/PostItem";
@@ -20,6 +10,7 @@ class PostList extends Component {
     super(props);
   }
   state = {
+    loading: false,
     activeStatus: "all",
     cateStatus: "menu",
     list: []
@@ -34,9 +25,13 @@ class PostList extends Component {
     });
   }
   getPostList() {
+    this.setState({
+      loading: true
+    });
     postApis.getPostList().then(res => {
       this.setState({
-        list: res.data.list
+        list: res.data.list,
+        loading: false
       });
     });
   }
@@ -104,7 +99,7 @@ class PostList extends Component {
         <Menu.Item key="2">热度</Menu.Item>
       </Menu>
     );
-    const { list } = this.state;
+    const { list, loading } = this.state;
     return (
       <div className="post-list">
         <Row className="header">
@@ -148,19 +143,35 @@ class PostList extends Component {
           </Col>
         </Row>
         <div className="fragment">
-          <p className="date">本月</p>
-          {list.map((item, index) => (
-            <PostItem
-              key={item._id}
-              title={item.title}
-              onEdit={() => {
-                this.goToEdit(item._id);
-              }}
-              onDelete={() => {
-                this.handleDeletePost(item._id, index);
-              }}
-            />
-          ))}
+          {/* 骨架 时间 */}
+          <Skeleton
+            loading={loading}
+            active
+            title={{ width: 100 }}
+            paragraph={false}
+          >
+            <p className="date">本月</p>
+          </Skeleton>
+          {/* 骨架 文章列表 */}
+          <Skeleton
+            loading={loading}
+            active
+            title={false}
+            paragraph={{ rows: 4, width: "100%" }}
+          >
+            {list.map((item, index) => (
+              <PostItem
+                key={item._id}
+                title={item.title}
+                onEdit={() => {
+                  this.goToEdit(item._id);
+                }}
+                onDelete={() => {
+                  this.handleDeletePost(item._id, index);
+                }}
+              />
+            ))}
+          </Skeleton>
         </div>
       </div>
     );
