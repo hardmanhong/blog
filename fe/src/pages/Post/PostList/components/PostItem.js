@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Row, Col, Button, Icon } from "antd";
+import moment from 'moment';
 import "./PostItem.scss";
 const PostItem = props => {
-  const { title, createDate, tag, onEdit, onDelete } = props;
+  const { title, createdDate, tag, onEdit, onDelete } = props;
   return (
     <Row className="component-post-item" type='flex' align='middle'>
       <Col span={10} className="title">
@@ -11,7 +12,7 @@ const PostItem = props => {
       </Col>
       <Col span={10} className="info">
         <Row type="flex">
-          <Col>2019/07/30</Col>
+          <Col>{moment(createdDate).format("YYYY/MM/DD")}</Col>
           <Col offset={5}>{tag}</Col>
         </Row>
       </Col>

@@ -9,6 +9,7 @@ exports.post_item = (req, res, next) => {
   }
   Post.findById(req.query.id)
     .populate("tag", "name")
+    .lean()
     .exec((err, post) => {
       if (err) {
         return next(err);
@@ -19,16 +20,27 @@ exports.post_item = (req, res, next) => {
       }
       // Successful, so render.
       // TODO: 反转义markdown和html
+
       res.json(handleSuccess(post));
     });
 };
 exports.post_list = (req, res, next) => {
-  Post.find({})
-    .populate("tag", "name")
+  Post.aggregate([{
+    $group:{
+      _id:new Date("$createdDate").getMonth()
+    }
+  }])
     .exec((err, list) => {
       if (err) {
         return next(err);
       }
+      list.forEach(item => {
+        let { name } = item.tag.reduce((acc, cur) => {
+          acc.name = [acc.name, cur.name].join(" ");
+          return acc;
+        });
+        item.tag = name;
+      });
       res.json(handleSuccess({ list }));
     });
 };
@@ -68,7 +80,8 @@ exports.post_edit = [
       if (req.body.id) {
         // 编辑
         const { id, title, tag, markdown, html } = req.body;
-        Post.findByIdAndUpdate(id, { title, tag, markdown, html }).exec(err => {
+        const updatedDate = new Date();
+        Post.findByIdAndUpdate(id, { title, tag, markdown, html,updatedDate }).exec(err => {
           if (err) {
             return next(err);
           }
