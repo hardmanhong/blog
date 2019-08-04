@@ -29,7 +29,9 @@ exports.post_list = (req, res, next) => {
     $group:{
       _id:new Date("$createdDate").getMonth()
     }
-  }])
+  }]).find({})
+    .populate("tag", "name")
+    .lean()
     .exec((err, list) => {
       if (err) {
         return next(err);
