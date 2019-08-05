@@ -102,7 +102,7 @@ class PostEdit extends Component {
   }
   handleCheckTag(id) {
     const checkTag = this.state.checkTag;
-    checkTag[id] = !checkTag[id];
+    checkTag[id] ? delete checkTag[id] : (checkTag[id] = true)
     this.setState({
       checkTag
     });

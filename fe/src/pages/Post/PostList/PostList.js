@@ -13,7 +13,7 @@ class PostList extends Component {
     loading: false,
     activeStatus: "all",
     cateStatus: "menu",
-    list: []
+    list: {}
   };
   componentDidMount() {
     this.getPostList();
@@ -41,14 +41,14 @@ class PostList extends Component {
       cateStatus
     });
   }
-  handleDeletePost(id, index) {
+  handleDeletePost(id, index, date) {
     const that = this;
     Modal.confirm({
       title: "确定删除该文章吗？",
       content: "删除后可在垃圾桶找回",
       onOk() {
         postApis.deletePost(id).then(res => {
-          that.state.list.splice(index, 1);
+          that.state.list[date].splice(index, 1);
           that.setState(
             {
               list: that.state.list
@@ -143,35 +143,40 @@ class PostList extends Component {
           </Col>
         </Row>
         <div className="fragment">
-          {/* 骨架 时间 */}
-          <Skeleton
-            loading={loading}
-            active
-            title={{ width: 100 }}
-            paragraph={false}
-          >
-            <p className="date">本月</p>
-          </Skeleton>
-          {/* 骨架 文章列表 */}
-          <Skeleton
-            loading={loading}
-            active
-            title={false}
-            paragraph={{ rows: 4, width: "100%" }}
-          >
-            {list.map((item, index) => (
-              <PostItem
-                key={item._id}
-                title={item.title}
-                onEdit={() => {
-                  this.goToEdit(item._id);
-                }}
-                onDelete={() => {
-                  this.handleDeletePost(item._id, index);
-                }}
-              />
-            ))}
-          </Skeleton>
+          {Object.keys(list).map(date => (
+            <React.Fragment key={date}>
+              {/* 骨架 时间 */}
+              <Skeleton
+                loading={loading}
+                active
+                title={{ width: 100 }}
+                paragraph={false}
+              >
+                <p className="date">{date}</p>
+              </Skeleton>
+              {/* 骨架 文章列表 */}
+              <Skeleton
+                loading={loading}
+                active
+                title={false}
+                paragraph={{ rows: 4, width: "100%" }}
+              >
+                {list[date].map((item, index) => (
+                  <PostItem
+                    key={item._id}
+                    title={item.title}
+                    tag={item.tag}
+                    onEdit={() => {
+                      this.goToEdit(item._id);
+                    }}
+                    onDelete={() => {
+                      this.handleDeletePost(item._id, index, date);
+                    }}
+                  />
+                ))}
+              </Skeleton>
+            </React.Fragment>
+          ))}
         </div>
       </div>
     );

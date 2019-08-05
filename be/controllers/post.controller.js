@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator/check");
 const { sanitizeBody } = require("express-validator/filter");
 const { handleSuccess, handleWraningNotExist } = require("../handle-result");
 const { handleParamsError } = require("../handle-params");
+const { unescape } = require("../utils");
 exports.post_item = (req, res, next) => {
   if (!req.query.id) {
     return res.json(handleParamsError());
@@ -16,36 +17,54 @@ exports.post_item = (req, res, next) => {
       }
       if (post == null) {
         // No results.
+
         return res.json(handleWraningNotExist("该文章不存在"));
       }
       // Successful, so render.
       // TODO: 反转义markdown和html
+      (post.markdown = unescape(post.markdown)), res.json(handleSuccess(post));
+    });
+};
+exports.post_list = [
+  (req, res, next) => {
+    Post.find({})
+      .populate("tag", "name")
+      .lean()
+      .sort({
+        createdDate: -1
+      })
+      .exec((err, list) => {
+        if (err) {
+          return next(err);
+        }
+        const posts = {};
 
-      res.json(handleSuccess(post));
-    });
-};
-exports.post_list = (req, res, next) => {
-  Post.aggregate([{
-    $group:{
-      _id:new Date("$createdDate").getMonth()
-    }
-  }]).find({})
-    .populate("tag", "name")
-    .lean()
-    .exec((err, list) => {
-      if (err) {
-        return next(err);
-      }
-      list.forEach(item => {
-        let { name } = item.tag.reduce((acc, cur) => {
-          acc.name = [acc.name, cur.name].join(" ");
-          return acc;
+        list.forEach(item => {
+          let { name } = item.tag.reduce((acc, cur) => {
+            acc.name = [acc.name, cur.name].join(" ");
+            return acc;
+          });
+          item.tag = name;
+          if (item.createdDate) {
+            const date = new Date(item.createdDate);
+            const year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month < 10 ? "0" + month : month;
+            let createDate = year + "年" + month + "月";
+            posts[createDate]
+              ? posts[createDate].push(item)
+              : (posts[createDate] = [item]);
+          }
         });
-        item.tag = name;
+        Post.count().exec((err, count) => {
+          if (err) {
+            return next(err);
+          }
+          res.json(handleSuccess({ list:posts, count }));
+        });
       });
-      res.json(handleSuccess({ list }));
-    });
-};
+  }
+];
 exports.post_edit = [
   // 校验
   body("title", "文章标题不能为空")
@@ -66,13 +85,10 @@ exports.post_edit = [
   },
 
   // 转义
-  sanitizeBody("*").escape(),
-  sanitizeBody("tag.*").escape(),
-
+  sanitizeBody("markdown").escape(),
+  sanitizeBody("html").escape(),
   (req, res, next) => {
-    console.log("tag", req.body.tag);
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.json({
         code: 1000,
@@ -83,7 +99,13 @@ exports.post_edit = [
         // 编辑
         const { id, title, tag, markdown, html } = req.body;
         const updatedDate = new Date();
-        Post.findByIdAndUpdate(id, { title, tag, markdown, html,updatedDate }).exec(err => {
+        Post.findByIdAndUpdate(id, {
+          title,
+          tag,
+          markdown,
+          html,
+          updatedDate
+        }).exec(err => {
           if (err) {
             return next(err);
           }

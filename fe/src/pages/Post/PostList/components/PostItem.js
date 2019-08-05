@@ -13,7 +13,7 @@ const PostItem = props => {
       <Col span={10} className="info">
         <Row type="flex">
           <Col>{moment(createdDate).format("YYYY/MM/DD")}</Col>
-          <Col offset={5}>{tag}</Col>
+          <Col className="tag" offset={5}>{tag}</Col>
         </Row>
       </Col>
       <Col span={4}>
