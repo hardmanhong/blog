@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Row, Col, Menu, Icon, Modal, message, Skeleton } from "antd";
+import {
+  Row,
+  Col,
+  Menu,
+  Icon,
+  Modal,
+  message,
+  Skeleton,
+  Pagination
+} from "antd";
 import ListAddButton from "@/components/ListAddButton";
 import "./PostList.scss";
 import PostItem from "./components/PostItem";
@@ -8,14 +17,24 @@ import postApis from "@/api/post";
 class PostList extends Component {
   constructor(props) {
     super(props);
+    this.pageParams = {
+      pageNumber: 1,
+      pageSize: 10
+    };
   }
   state = {
     loading: false,
     activeStatus: "all",
     cateStatus: "menu",
-    list: {}
+    list: {},
+    count: 0
   };
   componentDidMount() {
+    this.getPostList();
+  }
+  handlePageChange(page, pageSize) {
+    console.log(page, pageSize);
+    this.pageParams.pageNumber = page;
     this.getPostList();
   }
   goToEdit(id) {
@@ -28,8 +47,9 @@ class PostList extends Component {
     this.setState({
       loading: true
     });
-    postApis.getPostList().then(res => {
+    postApis.getPostList(this.pageParams).then(res => {
       this.setState({
+        count: res.data.count,
         list: res.data.list,
         loading: false
       });
@@ -99,7 +119,7 @@ class PostList extends Component {
         <Menu.Item key="2">热度</Menu.Item>
       </Menu>
     );
-    const { list, loading } = this.state;
+    const { count, list, loading } = this.state;
     return (
       <div className="post-list">
         <Row className="header">
@@ -143,41 +163,42 @@ class PostList extends Component {
           </Col>
         </Row>
         <div className="fragment">
-          {Object.keys(list).map(date => (
-            <React.Fragment key={date}>
-              {/* 骨架 时间 */}
-              <Skeleton
-                loading={loading}
-                active
-                title={{ width: 100 }}
-                paragraph={false}
-              >
+          {/* 骨架 文章列表 */}
+          <Skeleton
+            loading={loading}
+            active
+            title={{width:100}}
+            paragraph={{ rows: 5, width: "100%" }}
+          >
+            {Object.keys(list).map(date => (
+              <React.Fragment>
                 <p className="date">{date}</p>
-              </Skeleton>
-              {/* 骨架 文章列表 */}
-              <Skeleton
-                loading={loading}
-                active
-                title={false}
-                paragraph={{ rows: 4, width: "100%" }}
-              >
                 {list[date].map((item, index) => (
                   <PostItem
                     key={item._id}
                     title={item.title}
                     tag={item.tag}
+                    createdDate={item.createdDate}
                     onEdit={() => {
                       this.goToEdit(item._id);
                     }}
                     onDelete={() => {
                       this.handleDeletePost(item._id, index, date);
-                    }}
+                      }}
                   />
                 ))}
-              </Skeleton>
-            </React.Fragment>
-          ))}
+              </React.Fragment>
+            ))}
+          </Skeleton>
         </div>
+        <Pagination
+          className="pagination"
+          size="small"
+          total={count}
+          onChange={(page, pageSize) => {
+            this.handlePageChange(page, pageSize);
+          }}
+        />
       </div>
     );
   }

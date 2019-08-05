@@ -91,6 +91,9 @@ class TagEditModal extends PureComponent {
                 e.persist();
                 this.handleInputChange(e);
               }}
+              onPressEnter={e => {
+                this.handleOk();
+              }}
               placeholder="标签"
               addonAfter={
                 <ColorPicker

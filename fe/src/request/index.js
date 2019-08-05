@@ -43,7 +43,7 @@ const handleRequest = config => {
   addPending(config);
 };
 const handleResponse = response => {
-  console.log("处理响应",response)
+  console.log("处理响应", response);
   const { status, data, config } = response;
   const { code, message } = data;
   if (status === 200) {
@@ -66,8 +66,8 @@ const handleResponseError = error => {
   if (axios.isCancel(error)) {
     message.warning("网络请求中，请勿重复操作");
     console.log("网络请求中");
-  } else if(error.response) {
-    console.log('status',error.response);
+  } else if (error.response) {
+    console.log("status", error.response);
     switch (error.response.status) {
       case 404:
         message.error("接口地址有误");
@@ -79,6 +79,8 @@ const handleResponseError = error => {
         message.warning("网络不佳，稍后再试");
         break;
     }
+  } else {
+    message.error("服务器出错，稍后再试");
   }
 };
 // 添加请求拦截器
@@ -103,7 +105,7 @@ request.interceptors.response.use(
   },
   error => {
     // 对响应错误做点什么
-    console.dir("响应错误",error.response);
+    console.dir("响应错误", error.response);
     handleResponseError(error);
     return Promise.reject(error);
   }

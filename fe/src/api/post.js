@@ -12,8 +12,10 @@ const apis = {
   getPostItem: id => {
     return request.get("/getPostItem", { params: { id } });
   },
-  getPostList: () => {
-    return request.get("/getPostList");
+  getPostList: (params) => {
+    return request.get("/getPostList", {
+      params
+    });
   },
   deletePost: id => {
     return request.post("/deletePost", {

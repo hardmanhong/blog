@@ -27,9 +27,14 @@ exports.post_item = (req, res, next) => {
 };
 exports.post_list = [
   (req, res, next) => {
+    //TODO:采用性能更好的分页查询
+    //db.posts.find({_id:{$gt:ObjectId("5d482bee2230b8194c1f9052")}}).sort({"createdDate":-1}).limit(10)
+    const { pageNumber = 1, pageSize = 10 } = req.query;
     Post.find({})
       .populate("tag", "name")
       .lean()
+      .skip((+pageNumber - 1) * +pageSize)
+      .limit(+pageSize)
       .sort({
         createdDate: -1
       })
@@ -40,11 +45,16 @@ exports.post_list = [
         const posts = {};
 
         list.forEach(item => {
-          let { name } = item.tag.reduce((acc, cur) => {
-            acc.name = [acc.name, cur.name].join(" ");
-            return acc;
-          });
-          item.tag = name;
+          if (item.tag.length) {
+            let { name } = item.tag.reduce((acc, cur) => {
+              acc.name = [acc.name, cur.name].join(" ");
+              return acc;
+            });
+            item.tag = name;
+          } else {
+            item.tag = "";
+          }
+
           if (item.createdDate) {
             const date = new Date(item.createdDate);
             const year = date.getFullYear();
@@ -60,7 +70,7 @@ exports.post_list = [
           if (err) {
             return next(err);
           }
-          res.json(handleSuccess({ list:posts, count }));
+          res.json(handleSuccess({ list: posts, count }));
         });
       });
   }
