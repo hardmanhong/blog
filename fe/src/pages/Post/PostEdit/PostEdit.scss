@@ -1,13 +1,24 @@
 .post-edit {
-    .tags {
-        margin-top: 30px;
-        user-select: none;
-        .tag {
-            margin-bottom: 8px;
-        }
+  display: flex;
+  flex-direction: column;
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .tags {
+    margin-top: 30px;
+    user-select: none;
+    .tag {
+      margin-bottom: 8px;
     }
-    .editor {
-        margin-top: 30px;
-        height: 600px;
-    }
+  }
+  .editor {
+    flex: auto;
+    margin-top: 30px;
+    min-height: 300px;
+  }
 }

@@ -84,7 +84,7 @@ class Tags extends Component {
   render() {
     const { list, visibleNewTag, activeIndex } = this.state;
     return (
-      <div className="pages-tags">
+      <div className="pages-tags page">
         <Row className="header" type="flex" justify="end">
           <ListAddButton
             text="新标签"

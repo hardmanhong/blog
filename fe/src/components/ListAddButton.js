@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "antd";
-import style from './ListAddButton.module.css';
+import style from './ListAddButton.module.scss';
 const ListAddButton = ({ text, onClick }) => {
   return (
     <div

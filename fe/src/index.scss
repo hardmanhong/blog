@@ -21,12 +21,33 @@ code {
   flex: auto;
   min-height: 0;
   padding: 24px;
-  background:#fff;
+  background: #fff;
   .main-content {
     height: 100%;
     overflow-y: scroll;
     &::-webkit-scrollbar {
-      display: none;
+      z-index: 11;
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      width: 6px;
+      background: #e8e8e8;
+    }
+
+    &::-webkit-scrollbar-corner,
+    &::-webkit-scrollbar-track {
+      background: #fff;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+      background: #fff;
+      width: 6px;
     }
   }
 }
