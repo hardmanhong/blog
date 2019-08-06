@@ -1,9 +1,26 @@
-import Home from '../pages/Home';
-import PostList from '../pages/Post/PostList/PostList';
-import PostEdit from '../pages/Post/PostEdit/PostEdit';
+import React from 'react';
+import Loadable from 'react-loadable';
 
-import Project from '../pages/Project';
-import Tags from '../pages/Tags/Tags';
+const Home = Loadable({
+    loader:()=> import('@/pages/Home/Home'),
+    loading:()=><div/>
+})
+const PostList = Loadable({
+    loader:()=> import(/* webpackChunkName: 'PostList' */'@/pages/Post/PostList/PostList'),
+    loading:()=><div/>
+})
+const PostEdit = Loadable({
+    loader:()=> import('@/pages/Post/PostEdit/PostEdit'),
+    loading:()=><div/>
+})
+const Project = Loadable({
+    loader:()=> import('@/pages/Project/Project'),
+    loading:()=><div/>
+})
+const Tags = Loadable({
+    loader:()=> import('@/pages/Tags/Tags'),
+    loading:()=><div/>
+})
 const router = [
     {
         path: '/',
