@@ -68,10 +68,12 @@ class PostList extends Component {
       content: "删除后可在垃圾桶找回",
       onOk() {
         postApis.deletePost(id).then(res => {
-          that.state.list[date].splice(index, 1);
+          let list = that.state.list;
+          list[date].splice(index, 1);
+          if (!list[date].length) delete list[date];
           that.setState(
             {
-              list: that.state.list
+              list
             },
             () => {
               message.success("删除成功");
@@ -167,11 +169,11 @@ class PostList extends Component {
           <Skeleton
             loading={loading}
             active
-            title={{width:100}}
+            title={{ width: 100 }}
             paragraph={{ rows: 5, width: "100%" }}
           >
             {Object.keys(list).map(date => (
-              <React.Fragment>
+              <React.Fragment key={date}>
                 <p className="date">{date}</p>
                 {list[date].map((item, index) => (
                   <PostItem
@@ -184,7 +186,7 @@ class PostList extends Component {
                     }}
                     onDelete={() => {
                       this.handleDeletePost(item._id, index, date);
-                      }}
+                    }}
                   />
                 ))}
               </React.Fragment>
