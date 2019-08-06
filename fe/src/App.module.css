@@ -2,7 +2,16 @@
   width: 100%;
   height: 100%;
 }
-
+.content {
+  display: flex;
+  flex-direction: column;
+  margin: 0 16px 16px;
+  min-height: 280px;
+}
+.breadcrumb {
+  flex: 0 0 auto;
+  margin: 16px 0;
+}
 .trigger {
   font-size: 18px;
   line-height: 64px;

@@ -1,6 +1,4 @@
 .post-list {
-  position: relative;
-  height: 100%;
   color: #999;
   .header {
     position: absolute;
@@ -8,7 +6,7 @@
     left: 0;
     width: 100%;
     user-select: none;
-    padding-bottom: 20px;
+    padding: 20px 24px;
     background: #fff;
 
     z-index: 2;
@@ -21,14 +19,8 @@
     }
   }
   .fragment {
-    height: 100%;
     padding-top: 40px;
     padding-bottom: 40px;
-    overflow-y: scroll;
-    margin-top: 0;
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
   .status {
     padding: 5px;
@@ -46,7 +38,7 @@
     width: 100%;
     left: 0;
     bottom: 0;
-    padding-top: 20px;
+    padding: 20px 24px;
     background: #fff;
     text-align: right;
     z-index: 2;

@@ -123,7 +123,7 @@ class PostList extends Component {
     );
     const { count, list, loading } = this.state;
     return (
-      <div className="post-list">
+      <div className="post-list page">
         <Row className="header">
           <Col span={10}>{StatusButtonRender(buttons)}</Col>
           <Col span={14}>
@@ -164,7 +164,7 @@ class PostList extends Component {
             </Row>
           </Col>
         </Row>
-        <div className="fragment">
+        <div className="fragment main-content">
           {/* 骨架 文章列表 */}
           <Skeleton
             loading={loading}

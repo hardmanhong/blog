@@ -12,7 +12,7 @@ import mark from "markdown-it-mark";
 import tasklists from "markdown-it-task-lists";
 import { parseUrlParams } from "@/utils";
 import TagEditModal from "@/components/TagEditModal";
-
+import PageEditNavbar from "@/components/PageEditNavbar";
 import "./PostEdit.scss";
 import apisTag from "@/api/tag";
 import apisPost from "@/api/post";
@@ -44,8 +44,14 @@ class PostEdit extends Component {
       html: ""
     }
   };
+  async getPageData(){
+    await this.getTagList();
+    if(this.params.id){
+      this.getPostItem();
+    }
+  }
   getTagList() {
-    apisTag.getTagList().then(res => {
+    return apisTag.getTagList().then(res => {
       this.setState({
         tagList: res.data.list
       });
@@ -68,10 +74,7 @@ class PostEdit extends Component {
     });
   }
   componentDidMount() {
-    this.getTagList();
-    if (this.params.id) {
-      this.getPostItem();
-    }
+    this.getPageData();
   }
   createNewTag() {
     this.setState({
@@ -102,7 +105,7 @@ class PostEdit extends Component {
   }
   handleCheckTag(id) {
     const checkTag = this.state.checkTag;
-    checkTag[id] ? delete checkTag[id] : (checkTag[id] = true)
+    checkTag[id] ? delete checkTag[id] : (checkTag[id] = true);
     this.setState({
       checkTag
     });
@@ -143,10 +146,9 @@ class PostEdit extends Component {
       ));
     };
     return (
-      <div className="post-edit">
-        <Row type="flex" justify="end">
-          <Col>
-            <Button
+      <div className="post-edit page">
+        <PageEditNavbar>
+        <Button
               style={{ marginRight: "8px" }}
               onClick={() => {
                 this.handleSaveDraft();
@@ -162,85 +164,89 @@ class PostEdit extends Component {
             >
               发布
             </Button>
+        </PageEditNavbar>
+        {/* <Row type="flex" justify="end">
+          <Col>
+            
           </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
+        </Row> */}
+        <div className="main-content">
+          <Row>
+            <Col span={12}>
+              <Skeleton loading={loading} active paragraph={false}>
+                <Input
+                  value={post.title}
+                  placeholder="标题"
+                  ref={element => {
+                    if (element) this.titleInput = element;
+                  }}
+                  onChange={e => {
+                    e.persist();
+                    this.handleChangeInput(e);
+                  }}
+                />
+              </Skeleton>
+            </Col>
+          </Row>
+          <Row className="tags" type="flex">
             <Skeleton loading={loading} active paragraph={false}>
-              <Input
-                value={post.title}
-                placeholder="标题"
-                ref={element => {
-                  if (element) this.titleInput = element;
-                }}
-                onChange={e => {
-                  e.persist();
-                  this.handleChangeInput(e);
+              <Col>标签：</Col>
+              <Col style={{ flex: 1 }}>
+                {renderTag(tagList)}
+                <Tag
+                  onClick={() => {
+                    this.createNewTag();
+                  }}
+                  className="tag"
+                  style={{
+                    background: "#fff",
+                    borderStyle: "dashed",
+                    marginBottom: "8px"
+                  }}
+                >
+                  <Icon type="plus" /> 新标签
+                </Tag>
+                <TagEditModal
+                  visible={this.state.visibleNewTag}
+                  onOk={tagId => {
+                    this.handleTagModalOk(tagId);
+                  }}
+                  onCancel={() => {
+                    this.handleTagModalCancel();
+                  }}
+                />
+              </Col>
+            </Skeleton>
+          </Row>
+          <Row className="editor">
+            {loading ? (
+              <React.Fragment>
+                <Col span={11}>
+                  <Skeleton
+                    active
+                    title={false}
+                    paragraph={{ rows: 12, width: "100%" }}
+                  />
+                </Col>
+                <Col span={11} push={2}>
+                  <Skeleton
+                    active
+                    title={false}
+                    paragraph={{ rows: 12, width: "100%" }}
+                  />
+                </Col>
+              </React.Fragment>
+            ) : (
+              <MdEditor
+                value={post.markdown}
+                renderHTML={text => this.mdParser.render(text)}
+                onChange={content => {
+                  this.handleEditorChange(content);
                 }}
               />
-            </Skeleton>
-          </Col>
-        </Row>
-        <Row className="tags" type="flex">
-          <Skeleton loading={loading} active paragraph={false}>
-            <Col>标签：</Col>
-            <Col style={{ flex: 1 }}>
-              {renderTag(tagList)}
-              <Tag
-                onClick={() => {
-                  this.createNewTag();
-                }}
-                className="tag"
-                style={{
-                  background: "#fff",
-                  borderStyle: "dashed",
-                  marginBottom: "8px"
-                }}
-              >
-                <Icon type="plus" /> 新标签
-              </Tag>
-            </Col>
-          </Skeleton>
-        </Row>
-        <Row className="editor">
-          {loading ? (
-            <React.Fragment>
-              <Col span={11}>
-                <Skeleton
-                  loading={loading}
-                  active
-                  title={false}
-                  paragraph={{ rows: 12,width:'100%'  }}
-                />
-              </Col>
-              <Col span={11} push={2}>
-                <Skeleton
-                  loading={loading}
-                  active
-                  title={false}
-                  paragraph={{ rows: 12,width:'100%' }}
-                />
-              </Col>
-            </React.Fragment>
-          ) : (
-            <MdEditor
-              value={post.markdown}
-              renderHTML={text => this.mdParser.render(text)}
-              onChange={content => {
-                this.handleEditorChange(content);
-              }}
-            />
-          )}
-        </Row>
-        <TagEditModal
-          visible={this.state.visibleNewTag}
-          onOk={tagId => {
-            this.handleTagModalOk(tagId);
-          }}
-          onCancel={() => {
-            this.handleTagModalCancel();
-          }}
-        />
+            )}
+          </Row>
+        </div>
       </div>
     );
   }

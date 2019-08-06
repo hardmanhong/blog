@@ -22,27 +22,34 @@ const Tags = Loadable({
     loading:()=><div/>
 })
 const router = [
-    {
+    {   
+        icon:'home',
+        name:'统计',
         path: '/',
         component: Home
     },
     {
+        icon:'read',
+        name:'文章',
         path:'/post',
         component: PostList,
+        children:[
+            {
+                name:'新文章',
+                path:'/post/edit',
+                component: PostEdit,
+            },
+        ]
     },
     {
-        path:'/post/list',
-        component: PostList,
-    },
-    {
-        path:'/post/edit',
-        component: PostEdit,
-    },
-    {
+        icon: "project",
+        name:'项目',
         path:'/project',
         component: Project,
     },
     {
+        icon: "tags",
+        name:'标签',
         path:'/tags',
         component: Tags,
     },
