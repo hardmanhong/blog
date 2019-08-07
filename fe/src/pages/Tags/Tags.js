@@ -30,6 +30,7 @@ class Tags extends Component {
     this.setState({
       visibleNewTag: false
     });
+    message.success('新增成功');
     this.getTagList();
   }
   handleTagModalCancel() {

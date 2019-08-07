@@ -29,7 +29,7 @@ class TagEditModal extends PureComponent {
   }
   handleOk() {
     apis
-      .createTag({ name: this.state.inputValue, color: this.state.color })
+      .editTag({ name: this.state.inputValue, color: this.state.color })
       .then(res => {
         this.setState({
           inputValue: "",

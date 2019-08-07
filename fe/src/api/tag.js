@@ -1,11 +1,5 @@
 import request from "@/request";
 const apis = {
-  createTag: ({ name, color }) => {
-    return request.post("/createTag", {
-      name,
-      color
-    });
-  },
   getTagList: () => {
     return request.get("/getTagList");
   },
