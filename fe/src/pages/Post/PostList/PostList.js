@@ -9,10 +9,9 @@ import {
   Skeleton,
   Pagination
 } from "antd";
-import ListAddButton from "@/components/ListAddButton";
+import ListAddButton from "@/components/ListAddButton/ListAddButton";
 import "./PostList.scss";
 import PostItem from "./components/PostItem";
-import { spliceUrlParams } from "@/utils";
 import postApis from "@/api/post";
 class PostList extends Component {
   constructor(props) {
@@ -38,9 +37,9 @@ class PostList extends Component {
     this.getPostList();
   }
   goToEdit(id) {
-    this.props.history.push({
+    this.props.historyPush({
       pathname: "/post/edit",
-      search: spliceUrlParams({ id })
+      search: { id }
     });
   }
   getPostList() {
@@ -122,6 +121,8 @@ class PostList extends Component {
       </Menu>
     );
     const { count, list, loading } = this.state;
+    console.log("PostList render");
+
     return (
       <div className="post-list page">
         <Row className="header">

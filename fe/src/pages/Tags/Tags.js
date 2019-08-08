@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Row, message } from "antd";
-import ListAddButton from "@/components/ListAddButton";
+import ListAddButton from "@/components/ListAddButton/ListAddButton";
 import UTag from "./components/UTag";
-import TagEditModal from "@/components/TagEditModal";
+import TagEditModal from "@/components/TagEditModal/TagEditModal";
 import "./Tags.scss";
 import apis from "@/api/tag";
 class Tags extends Component {

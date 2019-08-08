@@ -10,9 +10,8 @@ import abbreviation from "markdown-it-abbr";
 import insert from "markdown-it-ins";
 import mark from "markdown-it-mark";
 import tasklists from "markdown-it-task-lists";
-import { parseUrlParams } from "@/utils";
-import TagEditModal from "@/components/TagEditModal";
-import PageEditNavbar from "@/components/PageEditNavbar";
+import TagEditModal from "@/components/TagEditModal/TagEditModal";
+import PageEditNavbar from "@/components/PageEditNavbar/PageEditNavbar";
 import "./PostEdit.scss";
 import apisTag from "@/api/tag";
 import apisPost from "@/api/post";
@@ -20,7 +19,6 @@ import apisPost from "@/api/post";
 class PostEdit extends Component {
   constructor(props) {
     super(props);
-    this.params = parseUrlParams(this.props.location.search);
     this.titleInput = null;
     this.mdParser = new MarkdownIt()
       .use(subscript)
@@ -44,9 +42,9 @@ class PostEdit extends Component {
       html: ""
     }
   };
-  async getPageData(){
+  async getPageData() {
     await this.getTagList();
-    if(this.params.id){
+    if (this.props.urlParams.id) {
       this.getPostItem();
     }
   }
@@ -61,7 +59,7 @@ class PostEdit extends Component {
     this.setState({
       loading: true
     });
-    apisPost.getPostItem(this.params.id).then(res => {
+    apisPost.getPostItem(this.props.urlParams.id).then(res => {
       const checkTag = this.state.checkTag;
       res.data.tag.forEach(tag => {
         checkTag[tag._id] = true;
@@ -120,16 +118,17 @@ class PostEdit extends Component {
   handleSaveDraft() {}
   handlePublish() {
     const post = this.state.post;
-    post.id = this.params.id;
+    post.id = this.props.urlParams.id;
     post.tag = Object.keys(this.state.checkTag);
     apisPost.editPost(post).then(res => {
       message.success("发布成功");
-      this.props.history.push({
+      this.props.historyPush({
         pathname: "/post/list"
       });
     });
   }
   render() {
+    console.log("PostEdit render");
     const { tagList, checkTag, post, loading } = this.state;
     const renderTag = tagList => {
       return tagList.map(tag => (
@@ -148,22 +147,22 @@ class PostEdit extends Component {
     return (
       <div className="post-edit page">
         <PageEditNavbar>
-        <Button
-              style={{ marginRight: "8px" }}
-              onClick={() => {
-                this.handleSaveDraft();
-              }}
-            >
-              存草稿
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                this.handlePublish();
-              }}
-            >
-              发布
-            </Button>
+          <Button
+            style={{ marginRight: "8px" }}
+            onClick={() => {
+              this.handleSaveDraft();
+            }}
+          >
+            存草稿
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              this.handlePublish();
+            }}
+          >
+            发布
+          </Button>
         </PageEditNavbar>
         {/* <Row type="flex" justify="end">
           <Col>
