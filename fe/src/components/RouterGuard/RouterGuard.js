@@ -10,13 +10,13 @@ const renderRouteComponent = (props, urlParams) => {
       location={location}
       history={history}
       match={match}
+      urlParams={urlParams}
       historyPush={({ pathname, search }) =>
         props.history.push({
           pathname,
           search: spliceUrlParams(search)
         })
       }
-      urlParams={urlParams}
     />
   );
 };
@@ -34,7 +34,7 @@ const handleRenderRoute = (route, props, urlParams) => {
 class RouterGuard extends Component {
   constructor(props) {
     super(props);
-    console.log("props", this.props);
+    console.log("路由守卫 props", this.props);
     const { location } = this.props;
     this.urlParams = parseUrlParams(location.search);
   }
