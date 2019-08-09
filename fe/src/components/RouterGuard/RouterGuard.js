@@ -10,13 +10,13 @@ const renderRouteComponent = (props, urlParams) => {
       location={location}
       history={history}
       match={match}
+      urlParams={urlParams}
       historyPush={({ pathname, search }) =>
         props.history.push({
           pathname,
           search: spliceUrlParams(search)
         })
       }
-      urlParams={urlParams}
     />
   );
 };
