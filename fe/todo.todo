@@ -1,4 +1,4 @@
 TODO:
-1. 使用react-redux重构，原因：react-redux会对props进行浅比较，减少心智负担，提升性能 https://imweb.io/topic/5a3f8879a192c3b460fce328
-2. 定义路由守卫
+1. 使用react-redux重构，重构标签编辑弹窗试手找找感觉
+原因：react-redux会对props进行浅比较，减少心智负担，提升性能 https://imweb.io/topic/5a3f8879a192c3b460fce328
 2. 封装顶部头部组件，支持面包屑

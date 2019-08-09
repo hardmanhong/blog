@@ -34,7 +34,7 @@ const handleRenderRoute = (route, props, urlParams) => {
 class RouterGuard extends Component {
   constructor(props) {
     super(props);
-    console.log("props", this.props);
+    console.log("路由守卫 props", this.props);
     const { location } = this.props;
     this.urlParams = parseUrlParams(location.search);
   }

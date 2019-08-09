@@ -3,7 +3,7 @@ import { Route,Switch } from "react-router-dom";
 import routers from "@/router";
 import RouterGuard from "@/components/RouterGuard/RouterGuard";
 const RouteRender = (routes) => {
-  console.log("RouteRender RouteRender");
+  console.log("RouteRender");
   const router = [];
   routes.forEach(route => {
     router.push(
