@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { Route,Switch } from "react-router-dom";
 import routers from "@/router";
-import RouterGuard from "@/components/RouterGuard/RouterGuard";
+import RouterGuard from "@/containers/RouterGuard/RouterGuard.container.js";
 let id = 0;
 const RouteRender = (routes) => {
   console.log("RouteRender");

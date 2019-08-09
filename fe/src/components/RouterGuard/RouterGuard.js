@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { withRouter, Redirect, Route } from "react-router-dom";
+import PropsType from "prop-types";
 import { spliceUrlParams, parseUrlParams } from "@/utils";
 import PageLayout from "@/components/PageLayout/PageLayout";
-
+import routers from "@/router";
+import { findPathByLeafId } from "@/utils";
 const renderRouteComponent = (props, urlParams) => {
   const { location, history, match, route } = props;
   return (
@@ -20,13 +22,13 @@ const renderRouteComponent = (props, urlParams) => {
     />
   );
 };
-const renderRouteComponentWithLayout = (props,urlParams) => {
-  return <PageLayout>{renderRouteComponent(props,urlParams)}</PageLayout>;
+const renderRouteComponentWithLayout = (props, urlParams) => {
+  return <PageLayout>{renderRouteComponent(props, urlParams)}</PageLayout>;
 };
 const handleRenderRoute = (route, props, urlParams) => {
   if (route.redirect) return <Redirect to={route.redirect} />;
   if (route.layout) {
-    return renderRouteComponentWithLayout(props,urlParams);
+    return renderRouteComponentWithLayout(props, urlParams);
   } else {
     return renderRouteComponent(props, urlParams);
   }
@@ -34,12 +36,27 @@ const handleRenderRoute = (route, props, urlParams) => {
 class RouterGuard extends Component {
   constructor(props) {
     super(props);
+    console.log("routers", routers);
     console.log("路由守卫 props", this.props);
     const { location } = this.props;
     this.urlParams = parseUrlParams(location.search);
   }
+  static propsType = {
+    routePath: PropsType.object.isRequired,
+    setPathById: PropsType.func.isRequired,
+    setBreadcrumb: PropsType.func.isRequired,
+  };
   componentDidMount() {
-    console.log("路由守卫 componentDidMount");
+    console.log("路由守卫 componentDidMount", this.props);
+    const {
+      routePath,
+      setPathById,
+      setBreadcrumb,
+      route,
+      location
+    } = this.props;
+    setPathById(route.id, location.pathname + location.search);
+    setBreadcrumb(findPathByLeafId(route.id, routers));
   }
   render() {
     const { route } = this.props;
