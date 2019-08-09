@@ -33,6 +33,7 @@ const NotAuth = Loadable({
   loader: () => import("@/pages/NotAuth/NotAuth"),
   loading: () => <div />
 });
+
 const router = [
   {
     layout: true,
@@ -76,7 +77,7 @@ const router = [
     component: Login
   },
   {
-    layout:true,
+    layout: true,
     name: "没有权限",
     path: "/not-auth",
     component: NotAuth

@@ -2,10 +2,12 @@ import React, { PureComponent } from "react";
 import { Route,Switch } from "react-router-dom";
 import routers from "@/router";
 import RouterGuard from "@/components/RouterGuard/RouterGuard";
+let id = 0;
 const RouteRender = (routes) => {
   console.log("RouteRender");
   const router = [];
   routes.forEach(route => {
+    route.id = ++id;
     router.push(
       <Route
         exact
@@ -21,7 +23,6 @@ const RouteRender = (routes) => {
   });
   return router;
 };
-
 class RouterRender extends PureComponent {
   render() {
     return (
