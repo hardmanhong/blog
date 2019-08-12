@@ -37,38 +37,43 @@ const NotAuth = Loadable({
 const router = [
   {
     layout: true,
+    menu: true,
+    icon: "home",
     name: "统计",
     path: "/",
-    component: Home,
+    component: Home
+  },
+  {
+    menu: true,
+    layout: true,
+    icon: "read",
+    name: "文章",
+    path: "/post",
+    component: PostList,
     children: [
       {
         layout: true,
-        name: "文章",
-        path: "/post",
-        component: PostList,
-        children: [
-          {
-            layout: true,
-            name: "新文章",
-            path: "/post/edit",
-            component: PostEdit
-          }
-        ]
-      },
-      {
-        layout: true,
-        name: "项目",
-        path: "/project",
-        component: Project
-      },
-      {
-        refusal: true,
-        layout: true,
-        name: "标签",
-        path: "/tags",
-        component: Tags
+        menu: true,
+        name: "新文章",
+        path: "/post/edit",
+        component: PostEdit,
+        breadcrumb: "${title}"
       }
     ]
+  },
+  {
+    layout: true,
+    name: "项目",
+    path: "/project",
+    component: Project
+  },
+  {
+    // refusal: true,
+    layout: true,
+    icon: "tags",
+    name: "标签",
+    path: "/tags",
+    component: Tags
   },
   {
     visitor: true,

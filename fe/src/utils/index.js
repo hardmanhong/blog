@@ -30,7 +30,7 @@ export const parseUrlParams = (paramsStr = "") => {
       let paramArr = param.split("=");
       let key = paramArr[0];
       let value = paramArr[1];
-      params[key] = value;
+      params[key] = decodeURIComponent(value);
     });
   return params;
 };
@@ -49,20 +49,22 @@ export const findTopRoutes = (menuJson, childId, result) => {
     return result;
   }
 };
-export const findPathByLeafId = (leafId, nodes, path) => {
-  if (path === undefined) {
-    path = [];
+export const findPathByLeafId = (leafId, nodes, tmpPath) => {
+  if (tmpPath === undefined) {
+    tmpPath = [];
   }
   for (var i = 0; i < nodes.length; i++) {
-    var tmpPath = path.concat();
-    const { id, name } = nodes[i];
-    tmpPath.push({ id, name });
+    var tmpPath = tmpPath.concat();
     if (leafId == nodes[i].id) {
+      const { id, name, path,icon,menu } = nodes[i];
+      tmpPath.unshift({ id, name, path,icon,menu });
       return tmpPath;
     }
     if (nodes[i].children) {
+      const { id, name, path,icon,menu } = nodes[i];
       var findResult = findPathByLeafId(leafId, nodes[i].children, tmpPath);
       if (findResult) {
+        findResult.unshift({ id, name, path,icon,menu });
         return findResult;
       }
     }

@@ -2,48 +2,46 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Menu, Icon } from "antd";
-const menus = [
-  {
-    icon: "home",
-    name: "统计",
-    path: "/"
-  },
-  {
-    icon: "read",
-    name: "文章",
-    path: "/post"
-  },
-  {
-    icon: "project",
-    name: "项目",
-    path: "/project"
-  },
-  {
-    icon: "tags",
-    name: "标签",
-    path: "/tags"
-  }
-];
-const menuItemRender = () => {
+const menuItemRender = menus => {
   return menus.map(menu => {
-    return (
-      <Menu.Item key={menu.path}>
-        <Link to={menu.path}>
-          <Icon type={menu.icon} />
-          <span>{menu.name}</span>
-        </Link>
-      </Menu.Item>
-    );
+    if (menu.children) {
+      return (
+        <Menu.SubMenu
+          title={
+            <span>
+              <Icon type={menu.icon} />
+              <span>{menu.name}</span>
+            </span>
+          }
+          key={menu.id}
+        >
+          {menuItemRender(menu.children)}
+        </Menu.SubMenu>
+      );
+    } else {
+      return (
+        <Menu.Item key={menu.id}>
+          <Link to={menu.path}>
+            {menu.icon && <Icon type={menu.icon} />}
+            <span>{menu.name}</span>
+          </Link>
+        </Menu.Item>
+      );
+    }
   });
 };
 class Menus extends PureComponent {
   static propTypes = {
-    menus: PropTypes.array
+    menus: PropTypes.array,
+    currentMenu: PropTypes.array
   };
+
   render() {
+    const { menus, currentMenu } = this.props;
+    console.log("currentMenu", currentMenu);
     return (
-      <Menu mode="inline" defaultSelectedKeys={["post"]}>
-        {menuItemRender()}
+      <Menu mode="inline" selectedKeys={currentMenu}>
+        {menuItemRender(menus)}
       </Menu>
     );
   }

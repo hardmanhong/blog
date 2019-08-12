@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { Layout, Icon } from "antd";
-import Menus from "@/components/Menus/Menus";
-import HeaderBreadcrumb from "@/components/HeaderBreadcrumb/HeaderBreadcrumb";
+import Menus from "@/containers/Menus/Menus.container";
+import Breadcrumb from "@/containers/Breadcrumb/Breadcrumb.container";
 import style from "./PageLayout.module.scss";
 const { Header, Sider, Content } = Layout;
 
@@ -46,9 +46,8 @@ class PageLayout extends PureComponent {
             />
           </Header>
           <Content className={style.content}>
-            <HeaderBreadcrumb className={style.breadcrumb} />
+            <Breadcrumb className={style.breadcrumb} />
             {this.props.children}
-            
           </Content>
         </Layout>
       </Layout>

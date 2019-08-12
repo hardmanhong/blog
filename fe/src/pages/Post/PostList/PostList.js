@@ -36,10 +36,10 @@ class PostList extends Component {
     this.pageParams.pageNumber = page;
     this.getPostList();
   }
-  goToEdit(id) {
+  goToEdit(id, title) {
     this.props.historyPush({
       pathname: "/post/edit",
-      search: { id }
+      search: { id, title }
     });
   }
   getPostList() {
@@ -183,7 +183,7 @@ class PostList extends Component {
                     tag={item.tag}
                     createdDate={item.createdDate}
                     onEdit={() => {
-                      this.goToEdit(item._id);
+                      this.goToEdit(item._id, item.title);
                     }}
                     onDelete={() => {
                       this.handleDeletePost(item._id, index, date);

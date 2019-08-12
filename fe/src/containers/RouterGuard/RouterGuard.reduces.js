@@ -1,7 +1,7 @@
-import { SET_PATH_BY_ID, SET_BREADCRUMB } from "./RouterGuard.actions";
+import { types } from "./RouterGuard.actions";
 const routePath = (state = {}, action) => {
   switch (action.type) {
-    case SET_PATH_BY_ID:
+    case types.SET_PATH_BY_ID:
       const obj = { ...state };
       if (obj[action.id]) {
         obj[action.id] !== action.path && (obj[action.id] = action.path);
@@ -15,10 +15,18 @@ const routePath = (state = {}, action) => {
 };
 const breadcrumb = (state = [], action) => {
   switch (action.type) {
-    case SET_BREADCRUMB:
+    case types.SET_BREADCRUMB:
       return action.breadcrumb;
     default:
       return state;
   }
 };
-export { routePath, breadcrumb };
+const currentMenu = (state = [], action) => {
+  switch (action.type) {
+    case types.SET_CURRENT_MENU:
+      return action.currentMenu;
+    default:
+      return state;
+  }
+};
+export { routePath, breadcrumb,currentMenu };

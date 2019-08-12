@@ -1,32 +1,14 @@
 import React, { PureComponent } from "react";
-import { Route,Switch } from "react-router-dom";
-import routers from "@/router";
-import RouterGuard from "@/containers/RouterGuard/RouterGuard.container.js";
-let id = 0;
-const RouteRender = (routes) => {
-  console.log("RouteRender");
-  const router = [];
-  routes.forEach(route => {
-    route.id = ++id;
-    router.push(
-      <Route
-        exact
-        key={route.path}
-        path={route.path}
-        render={props => <RouterGuard route={route}/>}
-      />
-    );
-    if (route.children) {
-      const children = RouteRender(route.children);
-      router.push(...children);
-    }
-  });
-  return router;
-};
+import { Switch } from "react-router-dom";
+import PropTypes from 'prop-types';
 class RouterRender extends PureComponent {
+  static propTypes = {
+    routes: PropTypes.array
+  };
   render() {
+    const {routes} = this.props;
     return (
-      <Switch>{RouteRender(routers)}</Switch>
+      <Switch>{routes}</Switch>
     )
   }
 }

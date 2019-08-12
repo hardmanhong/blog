@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { LocaleProvider } from "antd";
+import { ConfigProvider } from "antd";
 import zh_CN from "antd/lib/locale-provider/zh_CN";
 import reducer from "./reducers";
 import "./index.scss";
@@ -10,11 +10,11 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 const store = createStore(reducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 ReactDOM.render(
-  <LocaleProvider locale={zh_CN}>
+  <ConfigProvider locale={zh_CN}>
     <Provider store={store}>
       <App />
     </Provider>
-  </LocaleProvider>,
+  </ConfigProvider>,
   document.getElementById("root")
 );
 
