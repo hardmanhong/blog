@@ -16,7 +16,6 @@ const generateMenusRouter = router => {
   const routes = [];
   router.forEach(route => {
     route.id = ++routeId;
-
     routes.push(
       <Route
         exact
@@ -25,19 +24,16 @@ const generateMenusRouter = router => {
         render={() => <RouterGuard route={route} />}
       />
     );
+    let result = { menus: [], routes: [] };
+    if (route.children) {
+      result = generateMenusRouter(route.children);
+    }
+    routes.push(...result.routes);
     if (route.menu) {
       const { id, icon, name, path } = route;
       const menu = { id: id.toString(), icon, name, path };
-      if (route.children) {
-        const children = generateMenusRouter(route.children).menus;
-        if (children.length) menu.children = children;
-      }
+      result.menus.length && (menu.children = result.menus)
       menus.push(menu);
-    } else {
-      if (route.children) {
-        const children = generateMenusRouter(route.children).routes;
-        routes.push(...children);
-      }
     }
   });
   return {

@@ -59,25 +59,24 @@ class RouterGuard extends Component {
     const breadcrumb = findPathByLeafId(id, router);
     const currentMenu = [];
     if (route.path !== "/")
-      breadcrumb.unshift({
-        id: home.id,
-        name: home.name,
-        path: home.path,
-        icon: home.icon,
-        menu: home.menu
-      });
-    breadcrumb.forEach(item => {
-      if (item.id === id) {
-        item.path = path;
-        if (route.breadcrumb) {
-          const re = new RegExp(/[^${\}]+(?=})/g);
-          const field = route.breadcrumb.match(re);
-          if (field && this.urlParams[field]) {
-            item.name = this.urlParams[field];
+      breadcrumb.forEach(item => {
+        if (item.id === id) {
+          item.path = path;
+          if (route.breadcrumb) {
+            const re = new RegExp(/[^${\}]+(?=})/g);
+            const field = route.breadcrumb.match(re);
+            if (field && this.urlParams[field]) {
+              item.name = this.urlParams[field];
+            }
           }
         }
-      }
-      if (item.menu) currentMenu.push(item.id.toString());
+        if (item.menu) currentMenu.push(item.id.toString());
+      });
+    breadcrumb.unshift({
+      id: home.id,
+      path: home.path,
+      icon: home.icon,
+      menu: home.menu
     });
     setPathById(id, path);
     setCurrentMenu(currentMenu);

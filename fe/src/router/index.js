@@ -57,7 +57,17 @@ const router = [
         name: "新文章",
         path: "/post/edit",
         component: PostEdit,
-        breadcrumb: "${title}"
+        breadcrumb: "${title}",
+        children: [
+          {
+            layout: true,
+            menu: true,
+            name: "test",
+            path: "/post/edit/test",
+            component: NotAuth,
+            breadcrumb: "${title}"
+          }
+        ]
       }
     ]
   },

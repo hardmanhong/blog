@@ -56,15 +56,15 @@ export const findPathByLeafId = (leafId, nodes, tmpPath) => {
   for (var i = 0; i < nodes.length; i++) {
     var tmpPath = tmpPath.concat();
     if (leafId == nodes[i].id) {
-      const { id, name, path,icon,menu } = nodes[i];
-      tmpPath.unshift({ id, name, path,icon,menu });
+      const { id, name, path,menu } = nodes[i];
+      tmpPath.unshift({ id, name, path,menu });
       return tmpPath;
     }
     if (nodes[i].children) {
-      const { id, name, path,icon,menu } = nodes[i];
+      const { id, name, path,menu } = nodes[i];
       var findResult = findPathByLeafId(leafId, nodes[i].children, tmpPath);
       if (findResult) {
-        findResult.unshift({ id, name, path,icon,menu });
+        findResult.unshift({ id, name, path,menu });
         return findResult;
       }
     }
