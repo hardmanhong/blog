@@ -30,7 +30,7 @@ exports.post_list = [
     //db.posts.find({_id:{$gt:ObjectId("5d482bee2230b8194c1f9052")}}).sort({"createdDate":-1}).limit(10)
     const { status, pageNumber = 1, pageSize = 10 } = req.query;
     const findParams = {};
-    if(status) findParams.status = status;
+    if (status) findParams.status = status;
     Post.find(findParams)
       .populate("tag", "name")
       .lean()
@@ -67,7 +67,12 @@ exports.post_list = [
               : (posts[createDate] = [item]);
           }
         });
-        res.json(handleSuccess({ list: posts, count:list.length }));
+        Post.count(findParams).exec((err, count) => {
+          if (err) {
+            return next(err);
+          }
+          res.json(handleSuccess({ list: posts, count }));
+        });
       });
   }
 ];
