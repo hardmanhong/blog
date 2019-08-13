@@ -16,17 +16,26 @@ const routePath = (state = {}, action) => {
 const breadcrumb = (state = [], action) => {
   switch (action.type) {
     case types.SET_BREADCRUMB:
-      return action.breadcrumb;
+      return [...action.breadcrumb];
     default:
       return state;
   }
 };
-const currentMenu = (state = [], action) => {
+const selectedMenuKeys = (state = ["1"], action) => {
   switch (action.type) {
-    case types.SET_CURRENT_MENU:
-      return action.currentMenu;
+    case types.SET_SELECTED_MENU_KEYS:
+      return action.selectedMenuKeys.length ? [...action.selectedMenuKeys] : ["1"];
     default:
       return state;
   }
 };
-export { routePath, breadcrumb,currentMenu };
+const openMenuKeys = (state = ["1"], action) => {
+  switch (action.type) {
+    case types.SET_OPEN_MENU_KEYS:
+      return action.openMenuKeys.length ? [...action.openMenuKeys] : ["1"];
+    default:
+      return state;
+  }
+};
+
+export { routePath, breadcrumb, openMenuKeys, selectedMenuKeys };

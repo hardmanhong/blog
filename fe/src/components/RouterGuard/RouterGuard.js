@@ -35,42 +35,36 @@ const handleRenderRoute = (route, props, urlParams) => {
 class RouterGuard extends Component {
   constructor(props) {
     super(props);
-    const { location } = this.props;
-    this.urlParams = parseUrlParams(location.search);
-  }
-  static propsType = {
-    setPathById: PropsType.func.isRequired,
-    setBreadcrumb: PropsType.func.isRequired,
-    setCurrentMenu: PropsType.func.isRequired
-  };
-  componentDidMount() {
     const {
       router,
       setPathById,
       setBreadcrumb,
-      setCurrentMenu,
+      setSelectedMenuKyes,
+      setOpenMenuKyes,
       route,
       location
     } = this.props;
+    this.urlParams = parseUrlParams(location.search);
+
     const id = route.id;
     const path = location.pathname + location.search;
 
     const home = router[0];
     const breadcrumb = findPathByLeafId(id, router);
-    const currentMenu = [];
+    const selectedMenuKeys = [];
     if (route.path !== "/")
       breadcrumb.forEach(item => {
         if (item.id === id) {
           item.path = path;
           if (route.breadcrumb) {
-            const re = new RegExp(/[^${\}]+(?=})/g);
+            const re = new RegExp(/[^${\}]+(?=})/g); // 匹配${}中的内容
             const field = route.breadcrumb.match(re);
             if (field && this.urlParams[field]) {
               item.name = this.urlParams[field];
             }
           }
         }
-        if (item.menu) currentMenu.push(item.id.toString());
+        if (item.menu) selectedMenuKeys.push(item.id.toString());
       });
     breadcrumb.unshift({
       id: home.id,
@@ -78,9 +72,19 @@ class RouterGuard extends Component {
       icon: home.icon,
       menu: home.menu
     });
+    const openMenuKeys = selectedMenuKeys.slice(0, selectedMenuKeys.length - 1);
     setPathById(id, path);
-    setCurrentMenu(currentMenu);
     setBreadcrumb(breadcrumb);
+    setOpenMenuKyes(openMenuKeys);
+    setSelectedMenuKyes(selectedMenuKeys);
+  }
+  static propsType = {
+    setPathById: PropsType.func.isRequired,
+    setBreadcrumb: PropsType.func.isRequired,
+    setSelectedMenuKyes: PropsType.func.isRequired
+  };
+  componentDidMount() {
+    // 不应该在这里执行任务初始化任务，疑问：暂时怀疑是页面已经渲染再初始化,但是react-redux改变state，不是会自动刷新页面吗？？？
   }
   render() {
     const { route } = this.props;

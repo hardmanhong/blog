@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { Layout, Icon } from "antd";
 import Menus from "@/containers/Menus/Menus.container";
 import Breadcrumb from "@/containers/Breadcrumb/Breadcrumb.container";
 import style from "./PageLayout.module.scss";
 const { Header, Sider, Content } = Layout;
 
-class PageLayout extends PureComponent {
+class PageLayout extends Component {
   constructor(props) {
     super(props);
   }

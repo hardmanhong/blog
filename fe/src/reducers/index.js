@@ -4,7 +4,7 @@ import { types } from "@/actions/actions";
 const menus = (state = [], action) => {
   switch (action.type) {
     case types.GENERATE_MENUS:
-      return action.menus;
+      return JSON.parse(JSON.stringify(action.menus));
     default:
       return state;
   }

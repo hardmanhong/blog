@@ -2,27 +2,29 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import RouterGuardComponent from "@/components/RouterGuard/RouterGuard";
-import { setPathById, setBreadcrumb,setCurrentMenu } from "./RouterGuard.actions";
+import { setPathById, setBreadcrumb,setSelectedMenuKyes,setOpenMenuKyes } from "./RouterGuard.actions";
 class RouterGuard extends Component {
   static defaultProps = {
     route: PropTypes.object.isRequired
   };
   render() {
-    const { setPathById, setBreadcrumb,setCurrentMenu, router, route } = this.props;
+    const { setPathById, setBreadcrumb,setSelectedMenuKyes, setOpenMenuKyes,router, route,menus} = this.props;
     return (
       <RouterGuardComponent
         setPathById={setPathById}
         setBreadcrumb={setBreadcrumb}
-        setCurrentMenu={setCurrentMenu}
+        setSelectedMenuKyes={setSelectedMenuKyes}
+        setOpenMenuKyes={setOpenMenuKyes}
         router={router}
         route={route}
+        menus={menus}
       />
     );
   }
 }
 const mapStateToProps = state => {
-  const { router } = state;
-  return { router };
+  const { router,menus } = state;
+  return { router,menus };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -33,9 +35,13 @@ const mapDispatchToProps = dispatch => {
     setBreadcrumb(breadcrumb) {
       dispatch(setBreadcrumb(breadcrumb));
     },
-    setCurrentMenu(currentMenu) {
-      dispatch(setCurrentMenu(currentMenu));
+    setSelectedMenuKyes(menu) {
+      dispatch(setSelectedMenuKyes(menu));
     },
+    setOpenMenuKyes(menu) {
+      dispatch(setOpenMenuKyes(menu));
+    },
+
   };
 };
 export default connect(

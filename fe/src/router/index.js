@@ -53,32 +53,24 @@ const router = [
     children: [
       {
         layout: true,
-        menu: true,
         name: "新文章",
         path: "/post/edit",
         component: PostEdit,
         breadcrumb: "${title}",
-        children: [
-          {
-            layout: true,
-            menu: true,
-            name: "test",
-            path: "/post/edit/test",
-            component: NotAuth,
-            breadcrumb: "${title}"
-          }
-        ]
       }
     ]
   },
   {
+    menu: true,
     layout: true,
+    icon:'project',
     name: "项目",
     path: "/project",
     component: Project
   },
   {
     // refusal: true,
+    menu: true,
     layout: true,
     icon: "tags",
     name: "标签",

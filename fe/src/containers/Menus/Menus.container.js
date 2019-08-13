@@ -7,19 +7,19 @@ class Menus extends Component {
     menus: PropTypes.arrayOf(PropTypes.object)
   };
   render() {
-    const { menus, currentMenu } = this.props;
-    return <MenusComponent menus={menus} currentMenu={currentMenu} />;
+    const { menus, selectedMenuKeys, openMenuKeys } = this.props;
+    return (
+      <MenusComponent
+        menus={menus}
+        selectedMenuKeys={selectedMenuKeys}
+        openMenuKeys={openMenuKeys}
+      />
+    );
   }
 }
 const mapStateToProps = state => {
-  const { menus, currentMenu } = state;
-  return { menus, currentMenu };
+  const { menus, selectedMenuKeys, openMenuKeys } = state;
+  return { menus, selectedMenuKeys, openMenuKeys };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Menus);
+export default connect(mapStateToProps)(Menus);
