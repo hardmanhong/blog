@@ -21,7 +21,6 @@ exports.post_item = (req, res, next) => {
         return res.json(handleWraningNotExist("该文章不存在"));
       }
       // Successful, so render.
-      // TODO: 反转义markdown和html
       (post.markdown = unescape(post.markdown)), res.json(handleSuccess(post));
     });
 };
@@ -29,8 +28,10 @@ exports.post_list = [
   (req, res, next) => {
     //TODO:采用性能更好的分页查询
     //db.posts.find({_id:{$gt:ObjectId("5d482bee2230b8194c1f9052")}}).sort({"createdDate":-1}).limit(10)
-    const { pageNumber = 1, pageSize = 10 } = req.query;
-    Post.find({})
+    const { status, pageNumber = 1, pageSize = 10 } = req.query;
+    const findParams = {};
+    if(status) findParams.status = status;
+    Post.find(findParams)
       .populate("tag", "name")
       .lean()
       .skip((+pageNumber - 1) * +pageSize)
@@ -66,12 +67,7 @@ exports.post_list = [
               : (posts[createDate] = [item]);
           }
         });
-        Post.count().exec((err, count) => {
-          if (err) {
-            return next(err);
-          }
-          res.json(handleSuccess({ list: posts, count }));
-        });
+        res.json(handleSuccess({ list: posts, count:list.length }));
       });
   }
 ];
@@ -107,13 +103,14 @@ exports.post_edit = [
     } else {
       if (req.body.id) {
         // 编辑
-        const { id, title, tag, markdown, html } = req.body;
+        const { id, title, tag, markdown, html, status } = req.body;
         const updatedDate = new Date();
         Post.findByIdAndUpdate(id, {
           title,
           tag,
           markdown,
           html,
+          status,
           updatedDate
         }).exec(err => {
           if (err) {
@@ -123,12 +120,13 @@ exports.post_edit = [
         });
       } else {
         // 创建
-        const { title, tag, markdown, html } = req.body;
+        const { title, tag, markdown, html, status } = req.body;
         const post = new Post({
           title,
           tag,
           markdown,
-          html
+          html,
+          status
         });
         post.save(err => {
           if (err) {

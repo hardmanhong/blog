@@ -115,17 +115,23 @@ class PostEdit extends Component {
       post
     });
   }
-  handleSaveDraft() {}
-  handlePublish() {
+  savePost(status,message){
     const post = this.state.post;
     post.id = this.props.urlParams.id;
     post.tag = Object.keys(this.state.checkTag);
+    post.status = status;
     apisPost.editPost(post).then(res => {
-      message.success("发布成功");
+      message.success(message);
       this.props.historyPush({
-        pathname: "/post/list"
+        pathname: "/post"
       });
     });
+  }
+  handleSaveDraft() {
+    this.savePost(1,"已保存草稿")
+  }
+  handlePublish() {
+    this.savePost(2,"发布成功")
   }
   render() {
     console.log("PostEdit render");

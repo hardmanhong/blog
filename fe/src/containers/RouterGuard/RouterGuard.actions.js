@@ -5,10 +5,10 @@ export const types = {
   SET_OPEN_MENU_KEYS: "SET_OPEN_MENU_KEYS",
   SET_MENUS: "SET_MENUS",
 };
-export const setPathById = (id, path) => ({
+export const setPathById = (id, pathName) => ({
   type: types.SET_PATH_BY_ID,
   id,
-  path
+  pathName
 });
 export const setSelectedMenuKyes = (selectedMenuKeys) => {
   return ({

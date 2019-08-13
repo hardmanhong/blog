@@ -8,13 +8,14 @@ class RouterGuard extends Component {
     route: PropTypes.object.isRequired
   };
   render() {
-    const { setPathById, setBreadcrumb,setSelectedMenuKyes, setOpenMenuKyes,router, route,menus} = this.props;
+    const { setPathById, setBreadcrumb,setSelectedMenuKyes, setOpenMenuKyes,routeTrace,router, route,menus} = this.props;
     return (
       <RouterGuardComponent
         setPathById={setPathById}
         setBreadcrumb={setBreadcrumb}
         setSelectedMenuKyes={setSelectedMenuKyes}
         setOpenMenuKyes={setOpenMenuKyes}
+        routeTrace={routeTrace}
         router={router}
         route={route}
         menus={menus}
@@ -23,14 +24,14 @@ class RouterGuard extends Component {
   }
 }
 const mapStateToProps = state => {
-  const { router,menus } = state;
-  return { router,menus };
+  const { router,routeTrace,menus } = state;
+  return { router,routeTrace,menus };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setPathById(id, path) {
-      dispatch(setPathById(id, path));
+    setPathById(id, pathName) {
+      dispatch(setPathById(id, pathName));
     },
     setBreadcrumb(breadcrumb) {
       dispatch(setBreadcrumb(breadcrumb));

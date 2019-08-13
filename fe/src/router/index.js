@@ -57,6 +57,14 @@ const router = [
         path: "/post/edit",
         component: PostEdit,
         breadcrumb: "${title}",
+        children: [
+          {
+            layout: true,
+            name: "test",
+            path: "/post/test",
+            component: Project,
+          }
+        ]
       }
     ]
   },

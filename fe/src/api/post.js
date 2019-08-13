@@ -1,12 +1,13 @@
 import request from "@/request";
 const apis = {
-  editPost: ({ id = "", title = "", tag = [], markdown = "", html = "" }) => {
+  editPost: ({ id = "", title = "", tag = [], markdown = "", html = "",status=null }) => {
     return request.post("/editPost", {
       id,
       title,
       tag,
       markdown,
-      html
+      html,
+      status
     });
   },
   getPostItem: id => {

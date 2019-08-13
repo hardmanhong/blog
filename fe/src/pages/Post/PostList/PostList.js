@@ -31,6 +31,13 @@ class PostList extends Component {
   componentDidMount() {
     this.getPostList();
   }
+  toggleStatus(value,status){
+    this.setState({
+      activeStatus:value
+    })
+    this.pageParams.status = status;
+    this.getPostList();
+  }
   handlePageChange(page, pageSize) {
     console.log(page, pageSize);
     this.pageParams.pageNumber = page;
@@ -86,15 +93,20 @@ class PostList extends Component {
     const buttons = [
       {
         text: "全部",
-        value: "all"
+        value: "all",
+        status:null,
       },
       {
         text: "草稿",
-        value: "drafts"
+        value: "drafts",
+        status:1,
+
       },
       {
         text: "已发布",
-        value: "published"
+        value: "published",
+        status:2,
+
       }
     ];
     const StatusButtonRender = buttons =>
@@ -105,6 +117,7 @@ class PostList extends Component {
               this.state.activeStatus === button.value ? "active" : ""
             }`}
             key={button.value}
+            onClick={()=>{this.toggleStatus(button.value,button.status)}}
           >
             {button.text}
           </span>

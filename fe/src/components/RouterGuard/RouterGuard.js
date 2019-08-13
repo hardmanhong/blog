@@ -37,6 +37,7 @@ class RouterGuard extends Component {
     super(props);
     const {
       router,
+      routeTrace,
       setPathById,
       setBreadcrumb,
       setSelectedMenuKyes,
@@ -52,20 +53,30 @@ class RouterGuard extends Component {
     const home = router[0];
     const breadcrumb = findPathByLeafId(id, router);
     const selectedMenuKeys = [];
-    if (route.path !== "/")
+    let pathParams = "";
+    if (route.path !== "/") {
       breadcrumb.forEach(item => {
+        console.log("routeTrace", routeTrace);
+        const routeTra = routeTrace[item.id];
+        if (routeTrace && routeTra) {
+          // 赋值动态路径
+          let pathAndName = routeTra.split("@@");
+          pathAndName[0] && (item.path = pathAndName[0]);
+          pathAndName[1] && (item.name = pathAndName[1]);
+        }
         if (item.id === id) {
           item.path = path;
           if (route.breadcrumb) {
             const re = new RegExp(/[^${\}]+(?=})/g); // 匹配${}中的内容
             const field = route.breadcrumb.match(re);
             if (field && this.urlParams[field]) {
-              item.name = this.urlParams[field];
+              item.name = pathParams = this.urlParams[field];
             }
           }
         }
         if (item.menu) selectedMenuKeys.push(item.id.toString());
       });
+    }
     breadcrumb.unshift({
       id: home.id,
       path: home.path,
@@ -73,7 +84,9 @@ class RouterGuard extends Component {
       menu: home.menu
     });
     const openMenuKeys = selectedMenuKeys.slice(0, selectedMenuKeys.length - 1);
-    setPathById(id, path);
+    let pathName = path;
+    pathParams && (pathName = pathName + "@@" + pathParams);
+    setPathById(id, pathName); // path@@动态参数 如标题等
     setBreadcrumb(breadcrumb);
     setOpenMenuKyes(openMenuKeys);
     setSelectedMenuKyes(selectedMenuKeys);

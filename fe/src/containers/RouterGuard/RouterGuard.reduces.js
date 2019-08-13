@@ -1,12 +1,13 @@
 import { types } from "./RouterGuard.actions";
-const routePath = (state = {}, action) => {
+const routeTrace = (state = {}, action) => {
   switch (action.type) {
     case types.SET_PATH_BY_ID:
+      const {id,pathName} = action;
       const obj = { ...state };
-      if (obj[action.id]) {
-        obj[action.id] !== action.path && (obj[action.id] = action.path);
+      if (obj[id]) {
+        obj[id] !== pathName && (obj[id] = pathName);
       } else {
-        obj[action.id] = action.path;
+        obj[id] = pathName;
       }
       return obj;
     default:
@@ -38,4 +39,4 @@ const openMenuKeys = (state = ["1"], action) => {
   }
 };
 
-export { routePath, breadcrumb, openMenuKeys, selectedMenuKeys };
+export { routeTrace, breadcrumb, openMenuKeys, selectedMenuKeys };
