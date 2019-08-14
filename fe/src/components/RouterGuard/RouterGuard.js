@@ -101,7 +101,7 @@ class RouterGuard extends Component {
   }
   render() {
     const { route } = this.props;
-    const isLogin = false;
+    const isLogin = true;
     if (route.path === "/login") {
       if (isLogin) {
         return <Redirect to="/" />;

@@ -71,13 +71,13 @@ const router = [
   {
     menu: true,
     layout: true,
+    refusal: true,
     icon:'project',
     name: "项目",
     path: "/project",
     component: Project
   },
   {
-    // refusal: true,
     menu: true,
     layout: true,
     icon: "tags",

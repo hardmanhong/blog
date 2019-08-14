@@ -87,4 +87,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('\033[46;37m 地址： \033[40;36m http://localhost:'+addr.port);
 }

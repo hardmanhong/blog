@@ -48,7 +48,7 @@ class Login extends PureComponent {
                 initialValue: true
               })(
                 <Checkbox>
-                  <span style={{ color: "#fff" }}>Remember me</span>
+                  <span style={{ color: "#fff" }}>记住我</span>
                 </Checkbox>
               )}
               <Col>

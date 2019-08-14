@@ -1,41 +1,17 @@
 import React, { PureComponent } from "react";
-import "./NotFound.scss";
+import HelpPage from "@/components/HelpPage/HelpPage";
 class NotFound extends PureComponent {
+  backHome = () => {
+    this.props.history.replace("/");
+  };
   render() {
     return (
-      <div className="component-404">
-        <div className="text-error">
-          <div className="center-text-box">
-            <h1>Error ...</h1>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="center-numb-box">
-            <div className="four_one" />
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="center-numb-box_zero">
-            <div className="zero">
-              <div className="face" />
-            </div>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="center-numb-box">
-            <div className="four_two" />
-          </div>
-        </div>
-
-        <div className="text-page-not-found">
-          <div className="center-text-box">
-            <h1>Page Not Found !!!</h1>
-          </div>
-        </div>
-      </div>
+      <HelpPage
+        title="404"
+        content="抱歉，访问的页面消失在云里..."
+        buttonText='回首页'
+        onClick={this.backHome}
+      />
     );
   }
 }
