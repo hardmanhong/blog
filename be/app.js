@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 // cookie
 app.use(cookieParser());
 // 设置静态目录
-app.use(express.static(path.join(__dirname, "public")));
+app.use('/',express.static(path.join(__dirname, "public/build")));
 // 设置接口路由
 app.use("/api", allRouter);
 // 处理http错误

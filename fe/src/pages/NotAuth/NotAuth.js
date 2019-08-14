@@ -1,18 +1,12 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
 
 class NotAuth extends PureComponent {
-    render() {
-        return (
-            <div>
-                NotAuth
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+          not auth
+      </div>
+    );
+  }
 }
-
-NotAuth.propTypes = {
-
-};
-
 export default NotAuth;

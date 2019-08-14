@@ -1,0 +1,17 @@
+.component-login {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(-90deg, #845ec2, #2c73d2, #008e9b);
+  .login-card {
+    background: #ffffff33;
+    border-radius: 3px;
+    width: 300px;
+    padding: 40px;
+  }
+  .login-form-button {
+      width: 100%;
+  }
+}
