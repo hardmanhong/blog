@@ -14,14 +14,16 @@ exports.post_item = (req, res, next) => {
     .exec((err, post) => {
       if (err) {
         return next(err);
-      }
-      if (post == null) {
-        // No results.
+      } else {
+        if (post == null) {
+          // No results.
 
-        return res.json(handleWraningNotExist("该文章不存在"));
+          return res.json(handleWraningNotExist("该文章不存在"));
+        }
+        // Successful, so render.
+        post.markdown = unescape(post.markdown);
+        res.json(handleSuccess(post));
       }
-      // Successful, so render.
-      (post.markdown = unescape(post.markdown)), res.json(handleSuccess(post));
     });
 };
 exports.post_list = [

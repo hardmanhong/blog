@@ -10,12 +10,14 @@ exports.tag_list = (req, res, next) => {
     .exec((err, list) => {
       if (err) {
         return next(err);
+      }else {
+        res.json(
+          handleSuccess({
+            list
+          })
+        );
       }
-      res.json(
-        handleSuccess({
-          list
-        })
-      );
+
     });
 };
 exports.tag_delete = (req, res, next) => {
@@ -74,9 +76,10 @@ exports.tag_edit = [
               tag.save(err => {
                 if (err) {
                   return next(err);
+                }else {
+              res.json(handleSuccess(tag._id));
                 }
               });
-              res.json(handleSuccess(tag._id));
             }
     
           }

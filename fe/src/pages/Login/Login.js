@@ -1,13 +1,19 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Form, Icon, Input, Button, Checkbox ,Col} from "antd";
+import { Form, Icon, Input, Button, Checkbox, Col } from "antd";
 import "./Login.scss";
+import api from "@/api/user";
+
 class Login extends PureComponent {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        const { username, password } = values;
+        api.login({ username, password }).then(res => {
+          window.sessionStorage.setItem('token',res.data);
+          this.props.history.replace('/');
+        });
       }
     });
   };

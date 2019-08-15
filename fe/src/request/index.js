@@ -14,7 +14,7 @@ const addToken = config => {
   const timestamp = new Date().getTime();
   config.headers.timestamp = timestamp;
   //2.token
-  const token = sessionStorage.getItem("token");
+  const token = window.sessionStorage.getItem("token");
   if (token) {
     config.headers.token = token;
   }

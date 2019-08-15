@@ -1,11 +1,12 @@
 import request from "@/request";
-const apis = {
+
+export default {
   getTagList: () => {
     return request.get("/getTagList");
   },
-  
-  editTag: ({id,name,color}) => {
-    return request.post("/editTag",{id,name,color});
+
+  editTag: ({ id, name, color }) => {
+    return request.post("/editTag", { id, name, color });
   },
   deleteTag: id => {
     return request.post("/deleteTag", {
@@ -13,4 +14,3 @@ const apis = {
     });
   }
 };
-export default apis;

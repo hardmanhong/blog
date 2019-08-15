@@ -101,14 +101,14 @@ class RouterGuard extends Component {
   }
   render() {
     const { route } = this.props;
-    const isLogin = false;
+    const token = window.sessionStorage.getItem("token");
     if (route.path === "/login") {
-      if (isLogin) {
+      if (token) {
         return <Redirect to="/" />;
       }
     }
     if (route.path === "/not-auth") {
-      if (isLogin) {
+      if (token) {
         return handleRenderRoute(route, this.props, this.urlParams);
       } else {
         return <Redirect to="/login" />;
@@ -117,7 +117,7 @@ class RouterGuard extends Component {
     if (route.visitor) {
       return handleRenderRoute(route, this.props, this.urlParams);
     } else {
-      if (isLogin) {
+      if (token) {
         if (route.refusal) {
           return <Redirect to="/not-auth" />;
         } else {

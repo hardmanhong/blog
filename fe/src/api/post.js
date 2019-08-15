@@ -1,6 +1,14 @@
 import request from "@/request";
-const apis = {
-  editPost: ({ id = "", title = "", tag = [], markdown = "", html = "",status=null }) => {
+
+export default {
+  editPost: ({
+    id = "",
+    title = "",
+    tag = [],
+    markdown = "",
+    html = "",
+    status = null
+  }) => {
     return request.post("/editPost", {
       id,
       title,
@@ -13,7 +21,7 @@ const apis = {
   getPostItem: id => {
     return request.get("/getPostItem", { params: { id } });
   },
-  getPostList: (params) => {
+  getPostList: params => {
     return request.get("/getPostList", {
       params
     });
@@ -24,4 +32,3 @@ const apis = {
     });
   }
 };
-export default apis;
