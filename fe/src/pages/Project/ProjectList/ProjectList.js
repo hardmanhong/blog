@@ -11,6 +11,8 @@ import {
   Button
 } from "antd";
 import "./ProjectList.scss";
+import PagePagination from "@/components/PagePagination/PagePagination";
+
 import ProjectItem from "./components/ProjectItem";
 import api from "@/api/project";
 class ProjectList extends Component {
@@ -125,38 +127,9 @@ class ProjectList extends Component {
       });
     const { count, list, loading } = this.state;
     return (
-      <div className="post-list page">
-        <Row className="header">
-          <Col span={10}>{StatusButtonRender(buttons)}</Col>
-          <Col span={14}>
-            <Row type="flex" justify="end" align="middle">
-              <Col>
-                <Icon
-                  className={`icon ${
-                    this.state.cateStatus === "appstore" ? "active" : ""
-                  }`}
-                  type="appstore"
-                  onClick={() => {
-                    this.handleCateClick("appstore");
-                  }}
-                />
-                <Icon
-                  className={`icon ${
-                    this.state.cateStatus === "menu" ? "active" : ""
-                  }`}
-                  type="menu"
-                  onClick={() => {
-                    this.handleCateClick("menu");
-                  }}
-                />
-              </Col>
-              <Col offset={2}>
-                <Button icon="plus">新项目</Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <div className="fragment main-content">
+      <div className="project-list page">
+        <div className="main-content">
+        <Button className='button' type="primary" icon="plus" />
           {/* 骨架 文章列表 */}
           <Skeleton
             loading={loading}
@@ -166,10 +139,9 @@ class ProjectList extends Component {
           >
             {Object.keys(list).map(date => (
               <React.Fragment key={date}>
-                <p className="date">{date}</p>
-                <Row gutter={10}>
+                <Row gutter={15}>
                   {list[date].map((item, index) => (
-                    <Col span={5}>
+                    <Col span={6} key={item.id}>
                       <ProjectItem />
                     </Col>
                   ))}
@@ -178,14 +150,6 @@ class ProjectList extends Component {
             ))}
           </Skeleton>
         </div>
-        <Pagination
-          className="pagination"
-          size="small"
-          total={count}
-          onChange={(page, pageSize) => {
-            this.handlePageChange(page, pageSize);
-          }}
-        />
       </div>
     );
   }

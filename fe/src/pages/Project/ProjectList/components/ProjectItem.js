@@ -10,11 +10,15 @@ class ProjectItem extends PureComponent {
           <img src="http://127.0.0.1:9999/public/images/vehikl.png" alt="" />
         </div>
         <div className="info">
-          <h3 className="title ellipsis2">testeseteststste</h3>
-          <div className='action'>
-            <p className="date" >2019-09-09</p>
-            <Icon className='icon' type="edit" />
-            <Icon className='icon' type="delete" />
+          <div className="title ellipsis2">
+            testetestesetestststetestesetestststeseteststste
+          </div>
+          <div className="operation">
+            <p className="date">2019-09-09</p>
+            <div className="action">
+              <Icon className="icon" type="edit" />
+              <Icon className="icon" type="delete" />
+            </div>
           </div>
         </div>
       </div>
