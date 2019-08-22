@@ -14,7 +14,7 @@ const PostEdit = Loadable({
   loading: () => <div />
 });
 const Project = Loadable({
-  loader: () => import("@/pages/Project/Project"),
+  loader: () => import("@/pages/Project/ProjectList/ProjectList"),
   loading: () => <div />
 });
 const Tags = Loadable({
@@ -53,16 +53,18 @@ const router = [
     children: [
       {
         layout: true,
+        // menu: true,
         name: "新文章",
         path: "/post/edit",
         component: PostEdit,
         breadcrumb: "${title}",
         children: [
           {
+            // menu: true,
             layout: true,
             name: "test",
             path: "/post/test",
-            component: Project,
+            component: Project
           }
         ]
       }
@@ -71,8 +73,7 @@ const router = [
   {
     menu: true,
     layout: true,
-    refusal: true,
-    icon:'project',
+    icon: "project",
     name: "项目",
     path: "/project",
     component: Project

@@ -1,0 +1,32 @@
+.component-project-item {
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  border: 1px solid #ebeef5;
+  .cover img {
+    width: 100%;
+  }
+  .title {
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+    font-size: 20px;
+    line-height: 40px;
+  }
+  .info {
+    background: #fff;
+    padding: 20px;
+  }
+  .action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .date {
+    color: #999;
+    font-size: 14px;
+    margin:0;
+  }
+  .icon {
+      margin-left: 10px;
+  }
+}
