@@ -23,7 +23,6 @@ class PageLayout extends Component {
       <Layout className={style.layout}>
         <Sider
           breakpoint="lg"
-          collapsedWidth="0"
           className={style.sider}
           trigger={null}
           collapsible
