@@ -9,7 +9,7 @@ export default {
     html = "",
     status = null
   }) => {
-    return request.post("/editPost", {
+    return request.post("api/editPost", {
       id,
       title,
       tag,
@@ -19,15 +19,15 @@ export default {
     });
   },
   getPostItem: id => {
-    return request.get("/getPostItem", { params: { id } });
+    return request.get("api/getPostItem", { params: { id } });
   },
   getPostList: params => {
-    return request.get("/getPostList", {
+    return request.get("api/getPostList", {
       params
     });
   },
   deletePost: id => {
-    return request.post("/deletePost", {
+    return request.post("api/deletePost", {
       id
     });
   }

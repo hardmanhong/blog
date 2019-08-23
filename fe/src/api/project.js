@@ -4,30 +4,30 @@ export default {
   editProject: ({
     id = "",
     title = "",
-    tag = [],
+    cover = '',
     markdown = "",
     html = "",
     status = null
   }) => {
-    return request.post("/editPost", {
+    return request.post("api/editProject", {
       id,
       title,
-      tag,
+      cover,
       markdown,
       html,
       status
     });
   },
   getProjectItem: id => {
-    return request.get("/getPostItem", { params: { id } });
+    return request.get("api/getProjectItem", { params: { id } });
   },
   getProjectList: params => {
-    return request.get("/getPostList", {
+    return request.get("api/getProjectList", {
       params
     });
   },
   deleteProject: id => {
-    return request.post("/deletePost", {
+    return request.post("api/deleteProject", {
       id
     });
   }

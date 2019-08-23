@@ -95,7 +95,7 @@ exports.user_login = [
           const salt = result.salt;
           const hash = encryptPassword({ salt, username, password });
           if (hash === result.password) {
-            res.json(handleSuccess(hash));
+            res.json(handleSuccess({token:hash,username}));
           } else {
             res.json(handleAuthError("用户名或密码不正确"));
           }

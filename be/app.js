@@ -24,6 +24,8 @@ app.use(cookieParser());
 // 设置静态目录
 app.use('/',express.static(path.join(__dirname, "public/build")));
 app.use('/public',express.static(path.join(__dirname, "public")));
+app.use('/upload',express.static(path.join(__dirname, "upload")));
+
 // 设置接口路由
 app.use("/api", allRouter);
 // 处理http错误

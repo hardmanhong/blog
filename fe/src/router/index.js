@@ -1,26 +1,5 @@
 import React from "react";
 import Loadable from "react-loadable";
-
-const Home = Loadable({
-  loader: () => import("@/pages/Home/Home"),
-  loading: () => <div />
-});
-const PostList = Loadable({
-  loader: () => import("@/pages/Post/PostList/PostList"),
-  loading: () => <div />
-});
-const PostEdit = Loadable({
-  loader: () => import("@/pages/Post/PostEdit/PostEdit"),
-  loading: () => <div />
-});
-const Project = Loadable({
-  loader: () => import("@/pages/Project/ProjectList/ProjectList"),
-  loading: () => <div />
-});
-const Tags = Loadable({
-  loader: () => import("@/pages/Tags/Tags"),
-  loading: () => <div />
-});
 const Login = Loadable({
   loader: () => import("@/pages/Login/Login"),
   loading: () => <div />
@@ -33,59 +12,14 @@ const NotAuth = Loadable({
   loader: () => import("@/pages/NotAuth/NotAuth"),
   loading: () => <div />
 });
-
+const files = require.context(".", false, /\.js$/);
+const routers = [];
+files.keys().forEach(key => {
+  if (key === "./index.js") return;
+  routers.push(...files(key).default);
+});
 const router = [
-  {
-    layout: true,
-    menu: true,
-    icon: "home",
-    name: "统计",
-    path: "/",
-    component: Home
-  },
-  {
-    menu: true,
-    layout: true,
-    icon: "read",
-    name: "文章",
-    path: "/post",
-    component: PostList,
-    children: [
-      {
-        layout: true,
-        // menu: true,
-        name: "新文章",
-        path: "/post/edit",
-        component: PostEdit,
-        breadcrumb: "${title}",
-        children: [
-          {
-            // menu: true,
-            layout: true,
-            name: "test",
-            path: "/post/test",
-            component: Project
-          }
-        ]
-      }
-    ]
-  },
-  {
-    menu: true,
-    layout: true,
-    icon: "project",
-    name: "项目",
-    path: "/project",
-    component: Project
-  },
-  {
-    menu: true,
-    layout: true,
-    icon: "tags",
-    name: "标签",
-    path: "/tags",
-    component: Tags
-  },
+  ...routers,
   {
     visitor: true,
     name: "登录",

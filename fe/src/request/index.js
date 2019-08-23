@@ -4,7 +4,7 @@ message.config({
   top: 50
 });
 const request = axios.create({
-  baseURL: "http://127.0.0.1:9999/api",
+  baseURL: process.env.REACT_APP_WEB_URL,
   timeout: 30000
 });
 const pending = {};
