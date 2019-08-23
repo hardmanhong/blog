@@ -1,49 +1,23 @@
 import React, { Component } from "react";
-import { Layout, Icon } from "antd";
-import Menus from "@/containers/Menus/Menus.container";
+import { Layout } from "antd";
+import PageSider from "../PageSider/PageSider";
+import PageHeader from "../PageHeader/PageHeader";
 import Breadcrumb from "@/containers/Breadcrumb/Breadcrumb.container";
 import style from "./PageLayout.module.scss";
-const { Header, Sider, Content } = Layout;
+const { Content } = Layout;
 
 class PageLayout extends Component {
   constructor(props) {
     super(props);
   }
-  state = {
-    collapsed: false
-  };
-  toggle() {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  }
   render() {
     console.log("PageLayout render");
+    const { collapsed, setCollapsed, toggleCollapsed } = this.props;
     return (
       <Layout className={style.layout}>
-        <Sider
-          breakpoint="lg"
-          className={style.sider}
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          onCollapse={(collapsed, type) => {
-            this.setState({ collapsed });
-          }}
-        >
-          <div className={style.logo} />
-          <Menus />
-        </Sider>
+        <PageSider collapsed={collapsed} setCollapsed={setCollapsed} />
         <Layout style={{ overflowY: "hidden" }}>
-          <Header style={{ background: "#fff", padding: 0 }}>
-            <Icon
-              className={style.trigger}
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-              onClick={() => {
-                this.toggle();
-              }}
-            />
-          </Header>
+          <PageHeader collapsed={collapsed} toggleCollapsed={toggleCollapsed} />
           <Content className={style.content}>
             <Breadcrumb className={style.breadcrumb} />
             {this.props.children}

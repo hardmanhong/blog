@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import { Input, Row, Col, Tag, Icon, Button, Skeleton, message } from "antd";
-import MdEditor from "react-markdown-editor-lite";
-import MarkdownIt from "markdown-it";
-import subscript from "markdown-it-sub";
-import superscript from "markdown-it-sup";
-import footnote from "markdown-it-footnote";
-import deflist from "markdown-it-deflist";
-import abbreviation from "markdown-it-abbr";
-import insert from "markdown-it-ins";
-import mark from "markdown-it-mark";
-import tasklists from "markdown-it-task-lists";
+import MarkdownEditor from "@/components/MarkdownEditor/MarkdownEditor";
 import TagEditModal from "@/components/TagEditModal/TagEditModal";
 import PageEditNavbar from "@/components/PageEditNavbar/PageEditNavbar";
 import "./PostEdit.scss";
@@ -20,15 +11,6 @@ class PostEdit extends Component {
   constructor(props) {
     super(props);
     this.titleInput = null;
-    this.mdParser = new MarkdownIt()
-      .use(subscript)
-      .use(superscript)
-      .use(footnote)
-      .use(deflist)
-      .use(abbreviation)
-      .use(insert)
-      .use(mark)
-      .use(tasklists, { enabled: this.taskLists });
   }
   state = {
     loading: false,
@@ -93,41 +75,14 @@ class PostEdit extends Component {
       visibleNewTag: false
     });
   }
-  handleEditorChange({ text, html }) {
-    console.log('text',text)
-    console.log('html',html)
-
+  handleEditorChange = ({ text, html }) => {
     const post = this.state.post;
     post.markdown = text;
     post.html = html;
     this.setState({
       post
     });
-  }
-  handleImageUpload(file, callback) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const convertBase64UrlToBlob = urlData => {
-        let arr = urlData.split(","),
-          mime = arr[0].match(/:(.*?);/)[1];
-        let bstr = atob(arr[1]);
-        let n = bstr.length;
-        let u8arr = new Uint8Array(n);
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new Blob([u8arr], { type: mime });
-      };
-      const blob = convertBase64UrlToBlob(reader.result);
-      setTimeout(() => {
-        console.log('callback')
-        // setTimeout 模拟异步上传图片
-        // 当异步上传获取图片地址后，执行calback回调（参数为imageUrl字符串），即可将图片地址写入markdown
-        callback("http://127.0.0.1:9999/public/images/vehikl.png")
-      }, 1000);
-    };
-    reader.readAsDataURL(file);
-  }
+  };
   handleCheckTag(id) {
     const checkTag = this.state.checkTag;
     checkTag[id] ? delete checkTag[id] : (checkTag[id] = true);
@@ -269,13 +224,9 @@ class PostEdit extends Component {
                 </Col>
               </React.Fragment>
             ) : (
-              <MdEditor
+              <MarkdownEditor
                 value={post.markdown}
-                renderHTML={text => this.mdParser.render(text)}
-                onChange={content => {
-                  this.handleEditorChange(content);
-                }}
-                onImageUpload={this.handleImageUpload}
+                onChange={this.handleEditorChange}
               />
             )}
           </Row>

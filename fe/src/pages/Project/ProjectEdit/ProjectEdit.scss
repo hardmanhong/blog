@@ -1,0 +1,20 @@
+.project-edit {
+  display: flex;
+  flex-direction: column;
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .upload {
+    margin-top: 20px;
+  }
+  .editor {
+    flex: auto;
+    margin-top: 10px;
+    min-height: 300px;
+  }
+}

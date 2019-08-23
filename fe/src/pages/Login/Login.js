@@ -11,7 +11,8 @@ class Login extends PureComponent {
       if (!err) {
         const { username, password } = values;
         api.login({ username, password }).then(res => {
-          window.sessionStorage.setItem('token',res.data);
+          window.sessionStorage.setItem('token',res.data.toekn);
+          window.sessionStorage.setItem('username',res.data.username);
           this.props.history.replace('/');
         });
       }
@@ -22,6 +23,7 @@ class Login extends PureComponent {
     return (
       <div className="component-login">
         <div className="login-card">
+          <h2>Hong's Blog Admin</h2>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
               {getFieldDecorator("username", {

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import PropsType from "prop-types";
-import { spliceUrlParams, parseUrlParams } from "@/utils";
-import PageLayout from "@/components/PageLayout/PageLayout";
-import { findPathByLeafId } from "@/utils";
+import PageLayout from "@/containers/PageLayout/PageLayout.container";
+import { spliceUrlParams, parseUrlParams,findPathByLeafId } from "@/utils";
 const renderRouteComponent = (props, urlParams) => {
   const { location, history, match, route } = props;
   return (

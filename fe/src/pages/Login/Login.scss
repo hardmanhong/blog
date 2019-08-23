@@ -10,8 +10,15 @@
     border-radius: 3px;
     width: 300px;
     padding: 40px;
+    h2 {
+      text-align: center;
+      background-image: linear-gradient(to right, #008e9b, #845ec2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      user-select: none;
+    }
   }
   .login-form-button {
-      width: 100%;
+    width: 100%;
   }
 }

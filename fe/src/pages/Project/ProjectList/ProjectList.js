@@ -1,18 +1,8 @@
 import React, { Component } from "react";
-import {
-  Row,
-  Col,
-  Menu,
-  Icon,
-  Modal,
-  message,
-  Skeleton,
-  Pagination,
-  Button
-} from "antd";
+import { Row, Col, Modal, message, Skeleton, Spin } from "antd";
+import InfiniteScroll from "react-infinite-scroller";
 import "./ProjectList.scss";
-import PagePagination from "@/components/PagePagination/PagePagination";
-
+import ListAddButton from "@/components/ListAddButton/ListAddButton";
 import ProjectItem from "./components/ProjectItem";
 import api from "@/api/project";
 class ProjectList extends Component {
@@ -20,135 +10,111 @@ class ProjectList extends Component {
     super(props);
     this.pageParams = {
       pageNumber: 1,
-      pageSize: 10
+      pageSize: 12
     };
   }
   state = {
     loading: false,
+    hasMore: true,
     activeStatus: "all",
     cateStatus: "menu",
-    list: {},
+    list: [],
     count: 0
   };
   componentDidMount() {
     this.getProjectList();
   }
-  toggleStatus(value, status) {
-    this.setState({
-      activeStatus: value
-    });
-    this.pageParams.status = status;
+  handleInfiniteOnLoad = () => {
+    console.log("handleInfiniteOnLoad");
+    this.pageParams.pageNumber++;
     this.getProjectList();
-  }
-  handlePageChange(page, pageSize) {
-    console.log(page, pageSize);
-    this.pageParams.pageNumber = page;
-    this.getProjectList();
-  }
-  goToEdit(id, title) {
+  };
+  goToEdit = (id, title) => {
     this.props.historyPush({
-      pathname: "/post/edit",
+      pathname: "/project/edit",
       search: { id, title }
     });
-  }
+  };
   getProjectList() {
     this.setState({
       loading: true
     });
     api.getProjectList(this.pageParams).then(res => {
+      let length = this.state.list.length;
+      length += res.data.list.length;
+      let hasMore = this.state.hasMore;
+      const list = this.state.list;
+      list.push(...res.data.list);
+      if (length < res.data.count) {
+        hasMore = true;
+      } else {
+        hasMore = false;
+      }
+      console.log("hasmore", hasMore);
       this.setState({
         count: res.data.count,
-        list: res.data.list,
-        loading: false
+        list,
+        loading: false,
+        hasMore
       });
     });
   }
-  handleMenuClick() {}
-  handleCateClick(cateStatus) {
-    this.setState({
-      cateStatus
-    });
-  }
-  handleDeletePost(id, index, date) {
-    const that = this;
+  handleDeletePost = (id, index, date) => {
     Modal.confirm({
-      title: "确定删除该文章吗？",
-      content: "删除后可在垃圾桶找回",
-      onOk() {
+      title: "确定删除该项目吗？",
+      onOk: () => {
         api.deletePost(id).then(res => {
-          let list = that.state.list;
-          list[date].splice(index, 1);
-          if (!list[date].length) delete list[date];
-          that.setState(
-            {
-              list
-            },
-            () => {
-              message.success("删除成功");
-            }
-          );
+          let list = this.state.list;
+          list.splice(index, 1);
+          this.setState({ list }, () => {
+            message.success("删除成功");
+          });
         });
       }
     });
-  }
+  };
   render() {
-    const buttons = [
-      {
-        text: "全部",
-        value: "all",
-        status: null
-      },
-      {
-        text: "草稿",
-        value: "drafts",
-        status: 1
-      },
-      {
-        text: "已发布",
-        value: "published",
-        status: 2
-      }
-    ];
-    const StatusButtonRender = buttons =>
-      buttons.map(button => {
-        return (
-          <span
-            className={`status ${
-              this.state.activeStatus === button.value ? "active" : ""
-            }`}
-            key={button.value}
-            onClick={() => {
-              this.toggleStatus(button.value, button.status);
-            }}
-          >
-            {button.text}
-          </span>
-        );
-      });
-    const { count, list, loading } = this.state;
+    const { list, loading, hasMore } = this.state;
     return (
       <div className="project-list page">
+        <ListAddButton text="新项目" onClick={this.goToEdit} />
         <div className="main-content">
-        <Button className='button' type="primary" icon="plus" />
-          {/* 骨架 文章列表 */}
-          <Skeleton
-            loading={loading}
-            active
-            title={{ width: 100 }}
-            paragraph={{ rows: 5, width: "100%" }}
+          <InfiniteScroll
+            initialLoad={false}
+            pageStart={0}
+            loadMore={this.handleInfiniteOnLoad}
+            hasMore={!loading && hasMore}
+            useWindow={false}
           >
-            {Object.keys(list).map(date => (
-              <React.Fragment key={date}>
-                <Row gutter={15}>
-                  {list[date].map((item, index) => (
-                    <Col span={6} key={item.id}>
-                      <ProjectItem />
-                    </Col>
-                  ))}
-                </Row>
-              </React.Fragment>
-            ))}
-          </Skeleton>
+            {/* 骨架 文章列表 */}
+            {/* <Skeleton
+              loading={loading}
+              active
+              title={{ width: 100 }}
+              paragraph={{ rows: 5, width: "100%" }}
+            > */}
+              <Row gutter={15} className="row">
+                {list.map((item, index) => (
+                  <Col span={6} key={item._id}>
+                    <ProjectItem
+                      id={item._id}
+                      index={index}
+                      title={item.title}
+                      cover={item.cover}
+                      date={item.createdDate}
+                      onEdit={this.goToEdit}
+                      onDelete={this.handleDeletePost}
+                    />
+                  </Col>
+                ))}
+                {loading && hasMore && (
+                  <div className="demo-loading-container">
+                    <Spin />
+                  </div>
+                )}
+              </Row>
+            {/* </Skeleton> */}
+          </InfiniteScroll>
         </div>
       </div>
     );

@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import MenusComponent from "@/components/Menus/Menus";
-class Menus extends Component {
+import PageMenuComponent from "@/components/PageMenu/PageMenu";
+class PageMenu extends Component {
   static defaultProps = {
     menus: PropTypes.arrayOf(PropTypes.object)
   };
   render() {
     const { menus, selectedMenuKeys, openMenuKeys } = this.props;
     return (
-      <MenusComponent
+      <PageMenuComponent
         menus={menus}
         selectedMenuKeys={selectedMenuKeys}
         openMenuKeys={openMenuKeys}
@@ -22,4 +22,4 @@ const mapStateToProps = state => {
   return { menus, selectedMenuKeys, openMenuKeys };
 };
 
-export default connect(mapStateToProps)(Menus);
+export default connect(mapStateToProps)(PageMenu);
