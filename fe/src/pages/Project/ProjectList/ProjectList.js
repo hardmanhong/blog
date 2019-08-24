@@ -108,7 +108,7 @@ class ProjectList extends Component {
                   </Col>
                 ))}
                 {loading && hasMore && (
-                  <div className="demo-loading-container">
+                  <div className="spin">
                     <Spin />
                   </div>
                 )}
