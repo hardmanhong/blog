@@ -1,7 +1,9 @@
 var User = require("../models/user.model");
+const Blacklist = require("../models/blacklist.model");
 const { body, validationResult } = require("express-validator/check");
 const { sanitizeBody } = require("express-validator/filter");
 const crypto = require("crypto");
+const jwt = require("../jwt");
 
 const {
   handleSuccess,
@@ -29,6 +31,7 @@ const generateSalt = () => {
 const encryptPassword = ({ salt, username, password }) => {
   return md5(salt + username + password).replace(/(.{10})/, `$1${salt}`); // 在第10位插入salt
 };
+
 exports.user_signup = [
   body("username")
     .isLength({ min: 1 })
@@ -95,7 +98,8 @@ exports.user_login = [
           const salt = result.salt;
           const hash = encryptPassword({ salt, username, password });
           if (hash === result.password) {
-            res.json(handleSuccess({token:hash,username}));
+            const token = jwt.generateToekn({ id: result._id, username });
+            res.json(handleSuccess({ token, username }));
           } else {
             res.json(handleAuthError("用户名或密码不正确"));
           }
@@ -106,3 +110,19 @@ exports.user_login = [
     }
   }
 ];
+exports.user_logout = (req, res, next) => {
+  const token = req.body.token || req.query.token || req.headers["token"];
+  const exp = jwt.decodedToken(token).exp;
+  const blackList = new Blacklist({
+    token,
+    exp
+  });
+  blackList.save(err => {
+    if (err) {
+      console.log("错误", err);
+      return next(err);
+    } else {
+      res.json(handleSuccess());
+    }
+  });
+};

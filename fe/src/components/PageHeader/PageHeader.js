@@ -7,10 +7,10 @@ import api from "@/api/user";
 const { Header } = Layout;
 class PageHeader extends PureComponent {
   logout = () => {
-    // api.logout().then(res => {
+    api.logout().then(res => {
       sessionStorage.clear();
-      this.props.history.replace('/login');
-    // });
+      this.props.history.replace("/login");
+    });
   };
   render() {
     const username = window.sessionStorage.getItem("username") || "";

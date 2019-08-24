@@ -11,8 +11,8 @@ class Login extends PureComponent {
       if (!err) {
         const { username, password } = values;
         api.login({ username, password }).then(res => {
-          window.sessionStorage.setItem('token',res.data.toekn);
-          window.sessionStorage.setItem('username',res.data.username);
+          window.sessionStorage.setItem('token',res.data.token || '');
+          window.sessionStorage.setItem('username',res.data.username || '');
           this.props.history.replace('/');
         });
       }

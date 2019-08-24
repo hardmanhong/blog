@@ -5,7 +5,7 @@ message.config({
 });
 const request = axios.create({
   baseURL: process.env.REACT_APP_WEB_URL,
-  timeout: 30000
+  timeout: 30000,
 });
 const pending = {};
 const CancelToken = axios.CancelToken;
