@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <head id="document-head">
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +20,12 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Hong's Blog</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.22.2/antd.min.css"
+      integrity="sha256-C+URCJi+7VqyTUlBrU1SLGXvlixq4eaP3/CxCz3q8Ow="
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -34,5 +40,68 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/react/16.9.0/umd/react.production.min.js"
+      integrity="sha256-15e7WPERh0o2wO4LNQS156a0LZ6EpYHY9wzApyqie08="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.React ||
+        document.write(
+          '\x3Cscript src="/cdn/react.production.min.js" integrity="sha256-15e7WPERh0o2wO4LNQS156a0LZ6EpYHY9wzApyqie08=" crossorigin="anonymous">\x3C/script>'
+        );
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.production.min.js"
+      integrity="sha256-qVsF1ftL3vUq8RFOLwPnKimXOLo72xguDliIxeffHRc="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.ReactDOM ||
+        document.write(
+          '\x3Cscript src="/cdn/react-dom.production.min.js" integrity="sha256-qVsF1ftL3vUq8RFOLwPnKimXOLo72xguDliIxeffHRc=" crossorigin="anonymous">\x3C/script>'
+        );
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
+      integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.moment ||
+        document.write(
+          '\x3Cscript src="/cdn/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous">\x3C/script>'
+        );
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/antd/3.22.2/antd.min.js"
+      integrity="sha256-SE6FL/WJAB2g9qVAzsrwnG09B5nMoI0pMVJb2OElo1w="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.antd ||
+        document.write(
+          '\x3Cscript src="/cdn/antd.min.js" integrity="sha256-SE6FL/WJAB2g9qVAzsrwnG09B5nMoI0pMVJb2OElo1w=" crossorigin="anonymous">\x3C/script>'
+        );
+    </script>
+    <script>
+      for (var i = 0, length = document.styleSheets.length; i < length; i++) {
+        var sheet = document.styleSheets[i];
+        if (
+          sheet.href ===
+          "https://cdnjs.cloudflare.com/ajax/libs/antd/3.22.2/antd.min.css"
+        ) {
+          var rules = sheet.rules ? sheet.rules : sheet.cssRules;
+          if (rules.length == 0) {
+            var link = document.createElement("link");
+            link.href = "/cdn/antd.min.css";
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            document.getElementById("document-head").appendChild(link);
+          }
+        }
+      }
+    </script>
   </body>
 </html>

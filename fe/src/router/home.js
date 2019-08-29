@@ -2,7 +2,7 @@ import React from "react";
 import Loadable from "react-loadable";
 
 const Home = Loadable({
-  loader: () => import("@/pages/Home/Home"),
+  loader: () => import(/* webpackChunkName: "Home" */ "@/pages/Home/Home"),
   loading: () => <div />
 });
 

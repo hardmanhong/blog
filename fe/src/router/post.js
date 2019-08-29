@@ -1,11 +1,11 @@
 import React from "react";
 import Loadable from "react-loadable";
 const PostList = Loadable({
-  loader: () => import("@/pages/Post/PostList/PostList"),
+  loader: () => import(/* webpackChunkName: "PostList" */ "@/pages/Post/PostList/PostList"),
   loading: () => <div />
 });
 const PostEdit = Loadable({
-  loader: () => import("@/pages/Post/PostEdit/PostEdit"),
+  loader: () => import(/* webpackChunkName: "PostEdit" */ "@/pages/Post/PostEdit/PostEdit"),
   loading: () => <div />
 });
 export default [

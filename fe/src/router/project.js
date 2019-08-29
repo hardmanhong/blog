@@ -1,11 +1,11 @@
 import React from "react";
 import Loadable from "react-loadable";
 const ProjectList = Loadable({
-  loader: () => import("@/pages/Project/ProjectList/ProjectList"),
+  loader: () => import(/* webpackChunkName: "ProjectList" */ "@/pages/Project/ProjectList/ProjectList"),
   loading: () => <div />
 });
 const ProjectEdit = Loadable({
-  loader: () => import("@/pages/Project/ProjectEdit/ProjectEdit"),
+  loader: () => import(/* webpackChunkName: "ProjectEdit" */ "@/pages/Project/ProjectEdit/ProjectEdit"),
   loading: () => <div />
 });
 export default [

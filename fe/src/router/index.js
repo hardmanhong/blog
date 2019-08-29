@@ -1,15 +1,15 @@
 import React from "react";
 import Loadable from "react-loadable";
 const Login = Loadable({
-  loader: () => import("@/pages/Login/Login"),
+  loader: () => import(/* webpackChunkName: "Login" */ "@/pages/Login/Login"),
   loading: () => <div />
 });
 const NotFound = Loadable({
-  loader: () => import("@/pages/NotFound/NotFound"),
+  loader: () => import( /* webpackChunkName: "NotFound" */"@/pages/NotFound/NotFound"),
   loading: () => <div />
 });
 const NotAuth = Loadable({
-  loader: () => import("@/pages/NotAuth/NotAuth"),
+  loader: () => import(/* webpackChunkName: "NotAuth" */ "@/pages/NotAuth/NotAuth"),
   loading: () => <div />
 });
 const files = require.context(".", false, /\.js$/);

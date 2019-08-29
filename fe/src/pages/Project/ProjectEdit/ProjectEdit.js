@@ -145,6 +145,7 @@ class ProjectEdit extends Component {
               listType="picture-card"
               className="avatar-uploader"
               showUploadList={false}
+              data={{token:window.sessionStorage.getItem('token')}}
               action={process.env.REACT_APP_WEB_URL + "api/upload"}
               beforeUpload={this.beforeUpload}
               onChange={this.handleChange}
