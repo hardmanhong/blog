@@ -9,7 +9,7 @@ const PnpWebpackPlugin = require("pnp-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin"); // 压缩js，支持ES6语法，支持多进程。uglifyjs-webpack-plugin不支持ES6语法，需要配置babel
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const safePostCssParser = require("postcss-safe-parser");
@@ -27,6 +27,8 @@ const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require("react-dev-utils/typescriptFormatter");
 
 const postcssNormalize = require("postcss-normalize");
+const CompressionWebpackPlugin = require("compression-webpack-plugin"); // gzip
+
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin; // 分析项目打包情况
 process.env.REACT_APP_WEB_URL = require("../envirment").WEB_URL; // API服务器地址
@@ -206,7 +208,11 @@ module.exports = function(webpackEnv) {
               // https://github.com/facebook/create-react-app/issues/5250
               // Pending futher investigation:
               // https://github.com/terser-js/terser/issues/120
-              inline: 2
+              inline: 2,
+              // 删除日志
+              drop_console: true,
+              drop_debugger: true,
+              pure_funcs: ["console.log"]
             },
             mangle: {
               safari10: true
@@ -223,7 +229,7 @@ module.exports = function(webpackEnv) {
           // Default number of concurrent runs: os.cpus().length - 1
           // Disabled on WSL (Windows Subsystem for Linux) due to an issue with Terser
           // https://github.com/webpack-contrib/terser-webpack-plugin/issues/21
-          parallel: !isWsl,
+          parallel: true || !isWsl,
           // Enable file caching
           cache: true,
           sourceMap: shouldUseSourceMap
@@ -248,18 +254,20 @@ module.exports = function(webpackEnv) {
       // Automatically split vendor and commons
       // https://twitter.com/wSokra/status/969633336732905474
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      splitChunks: {
-        chunks: "all",
-        name: false,
-        cacheGroups: {
-          libs: {
-            name: "chunk-libs",
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
-            chunks: "all"
-          },
-        }
-      },
+      splitChunks: isEnvProduction
+        ? {
+            chunks: "all",
+            name: false,
+            cacheGroups: {
+              libs: {
+                name: "chunk-libs",
+                test: /[\\/]node_modules[\\/]/,
+                priority: 10,
+                chunks: "all"
+              }
+            }
+          }
+        : undefined,
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
       runtimeChunk: true
@@ -366,7 +374,7 @@ module.exports = function(webpackEnv) {
                         }
                       }
                     }
-                  ],
+                  ]
                   // 按需加载antd组件
                   // [
                   //   require.resolve("babel-plugin-import"), // 导入 import 插件
@@ -499,7 +507,7 @@ module.exports = function(webpackEnv) {
     },
     plugins: [
       // 分析打包大小
-      new BundleAnalyzerPlugin({ analyzerPort: 7777 }),
+      isEnvProduction && new BundleAnalyzerPlugin({ analyzerPort: 7777 }),
 
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
@@ -633,16 +641,26 @@ module.exports = function(webpackEnv) {
           silent: true,
           // The formatter is invoked directly in WebpackDevServerUtils during development
           formatter: isEnvProduction ? typescriptFormatter : undefined
-        })
+        }),
+      // 开启gzip，需要服务器配合
+      new CompressionWebpackPlugin({
+        filename: "[path].gz[query]",
+        algorithm: "gzip",
+        test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i,
+        threshold: 10240,
+        minRatio: 0.8
+      })
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
-    externals:{
-      'react':'React',
-      'react-dom':'ReactDOM',
-      'moment':'moment',
-      'antd':'antd',
-    },
+    externals: isEnvProduction
+      ? {
+          react: "React",
+          "react-dom": "ReactDOM",
+          moment: "moment",
+          antd: "antd"
+        }
+      : undefined,
     node: {
       module: "empty",
       dgram: "empty",

@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const compression  = require('compression');
 const connectMongoDB = require("./mongodb");
 const handleError = require("./handle-error");
 const allRouter = require("./routes");
@@ -10,6 +11,8 @@ const app = express();
 const checkToken = require("./middlewares/checkToken");
 // 连接mongoDB
 connectMongoDB();
+// 启用gzip
+app.use(compression());
 // 设置视图目录及视图模板引擎格式
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
