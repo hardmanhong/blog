@@ -8,7 +8,7 @@ const connectMongoDB = require("./mongodb");
 const handleError = require("./handle-error");
 const allRouter = require("./routes");
 const app = express();
-const checkToken = require("./middlewares/checkToken");
+const checkToken = require("./middlewares/checkToken").checkToken;
 // 连接mongoDB
 connectMongoDB();
 // 启用gzip

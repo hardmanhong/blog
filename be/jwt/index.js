@@ -11,7 +11,7 @@ exports.generateToekn = data => {
     KEY
   );
 };
-exports.verifyToekn = (token, callback) => {
+exports.verifyToken = (token, callback) => {
   jwt.verify(token, KEY, (err, decoded) => {
     callback(err, decoded);
   });

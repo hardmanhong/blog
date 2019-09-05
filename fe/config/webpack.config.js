@@ -210,9 +210,9 @@ module.exports = function(webpackEnv) {
               // https://github.com/terser-js/terser/issues/120
               inline: 2,
               // 删除日志
-              drop_console: true,
-              drop_debugger: true,
-              pure_funcs: ["console.log"]
+              drop_console: isEnvProduction,
+              drop_debugger: isEnvProduction,
+              pure_funcs: isEnvProduction && ["console.log"]
             },
             mangle: {
               safari10: true
@@ -374,7 +374,7 @@ module.exports = function(webpackEnv) {
                         }
                       }
                     }
-                  ]
+                  ],
                   // 按需加载antd组件
                   // [
                   //   require.resolve("babel-plugin-import"), // 导入 import 插件
@@ -383,7 +383,8 @@ module.exports = function(webpackEnv) {
                   //     libraryDirectory: "es",
                   //     style: "css"
                   //   }
-                  // ]
+                  // ],
+                  [require.resolve("babel-plugin-recharts")]
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -508,7 +509,6 @@ module.exports = function(webpackEnv) {
     plugins: [
       // 分析打包大小
       isEnvProduction && new BundleAnalyzerPlugin({ analyzerPort: 7777 }),
-
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
@@ -642,7 +642,7 @@ module.exports = function(webpackEnv) {
           // The formatter is invoked directly in WebpackDevServerUtils during development
           formatter: isEnvProduction ? typescriptFormatter : undefined
         }),
-      // 开启gzip，需要服务器配合
+      // 生成gzip文件，需要服务器配合
       new CompressionWebpackPlugin({
         filename: "[path].gz[query]",
         algorithm: "gzip",
@@ -658,7 +658,8 @@ module.exports = function(webpackEnv) {
           react: "React",
           "react-dom": "ReactDOM",
           moment: "moment",
-          antd: "antd"
+          antd: "antd",
+          recharts: "Recharts"
         }
       : undefined,
     node: {
