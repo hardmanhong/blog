@@ -9,6 +9,7 @@ class RouterRender extends PureComponent {
     const {routes} = this.props;
     return (
       <Switch>{routes}</Switch>
+
     )
   }
 }
