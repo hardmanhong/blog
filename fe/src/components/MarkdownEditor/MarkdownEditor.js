@@ -10,8 +10,10 @@ import abbreviation from "markdown-it-abbr";
 import insert from "markdown-it-ins";
 import mark from "markdown-it-mark";
 import tasklists from "markdown-it-task-lists";
-import api from '@/api/base';
-import {upload} from '@/filters';
+import toc from "markdown-it-toc-and-anchor";
+
+import api from "@/api/base";
+import { upload } from "@/filters";
 class MarkdownEditor extends PureComponent {
   constructor(props) {
     super(props);
@@ -23,6 +25,11 @@ class MarkdownEditor extends PureComponent {
       .use(abbreviation)
       .use(insert)
       .use(mark)
+      // .use(toc, {
+      //   html: true,
+      //   linkify: true,
+      //   typography: true
+      // })
       .use(tasklists, { enabled: this.taskLists });
   }
   renderHTML = text => {
@@ -45,11 +52,11 @@ class MarkdownEditor extends PureComponent {
         return new Blob([u8arr], { type: mime });
       };
       const blob = convertBase64UrlToBlob(reader.result);
-      const formData = new FormData()
-      formData.append('file', blob,file.name);
-      api.upload(formData).then(res=>{
+      const formData = new FormData();
+      formData.append("file", blob, file.name);
+      api.upload(formData).then(res => {
         callback(upload(res.data));
-      })
+      });
     };
     reader.readAsDataURL(file);
   }

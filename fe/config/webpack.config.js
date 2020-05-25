@@ -376,14 +376,14 @@ module.exports = function(webpackEnv) {
                     }
                   ],
                   // 按需加载antd组件
-                  // [
-                  //   require.resolve("babel-plugin-import"), // 导入 import 插件
-                  //   {
-                  //     libraryName: "antd", //暴露antd
-                  //     libraryDirectory: "es",
-                  //     style: "css"
-                  //   }
-                  // ],
+                  [
+                    require.resolve("babel-plugin-import"), // 导入 import 插件
+                    {
+                      libraryName: "antd", //暴露antd
+                      libraryDirectory: "es",
+                      style: "css"
+                    }
+                  ],
                   [require.resolve("babel-plugin-recharts")]
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -483,6 +483,29 @@ module.exports = function(webpackEnv) {
                 },
                 "sass-loader"
               )
+            },
+            {
+              test: /\.less$/,
+              use: [
+                {
+                  loader: "style-loader"
+                },
+                {
+                  loader: "css-loader" // translates CSS into CommonJS
+                },
+                {
+                  loader: "less-loader", // compiles Less to CSS
+                  options: {
+                    modifyVars: {
+                      "primary-color": "#003D90",
+                      "link-color": "#003D90"
+                      // or
+                      // 'hack': `true; @import "./hgTheme.less";`, // Override with less file
+                    },
+                    javascriptEnabled: true
+                  }
+                }
+              ]
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
